@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "format": "prettier --write ."
   },
   "keywords": [],
   "author": "",
@@ -18,8 +19,10 @@
     "express": "^5.2.1"
   },
   "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@types/express": "^5.0.6",
     "@types/node": "^25.5.2",
+    "prettier": "^3.8.1",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.4",
     "typescript": "^6.0.2"
