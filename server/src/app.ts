@@ -1,11 +1,12 @@
 import express from 'express';
 
-const app = express();
+import { router } from './index.js';
+import { globalErrorHandler } from './module/error-handler-middleware.js';
+
+export const app = express();
 
 app.use(express.json());
 
-app.get('/', (_req, res) => {
-  res.json({ status: 'ok' });
-});
+app.use(router);
 
-export default app;
+app.use(globalErrorHandler);
