@@ -5,10 +5,7 @@ import { ApiError } from './utils/api-error.js';
 
 export function validateSchema(schema: ZodSchema, source: 'body' | 'query' | 'params' = 'body') {
   return (req: Request, res: Response, next: NextFunction): void => {
-    const data = req[source] || {};
-
-    const result = schema.safeParse(data);
-
+    const result = schema.safeParse(req[source]);
     if (!result.success) {
       const firstError = result.error.issues[0]?.message;
 
@@ -19,7 +16,7 @@ export function validateSchema(schema: ZodSchema, source: 'body' | 'query' | 'pa
       });
     }
 
-    req.data = Object.assign(req.data || {}, result.data);
+    req[source] = result.data;
 
     next();
   };
