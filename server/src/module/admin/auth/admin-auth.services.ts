@@ -1,13 +1,13 @@
 import argon2 from 'argon2';
 
-import { pool } from '../../../infra/db/db.js';
 import { ERROR_CONFIG } from '../../error-config.js';
 import { ApiError } from '../../utils/api-error.js';
-import { repository } from './admin-auth.repository.js';
+import { repository } from '../session/admin-session.repository.js';
+import { findAdminByEmail } from './admin-auth.repository.js';
 
 export const service = {
   authenticateAdmin: async ({ email, password }: { email: string; password: string }) => {
-    const admin = await repository.getAdminByEmail(pool, email);
+    const admin = await findAdminByEmail(email);
 
     if (!admin) {
       throw new ApiError(ERROR_CONFIG.INVALID_CREDENTIALS);
@@ -19,10 +19,15 @@ export const service = {
       throw new ApiError(ERROR_CONFIG.INVALID_CREDENTIALS);
     }
 
+    const sessionId = await repository.create(admin.id, admin.role);
+
     return {
-      id: admin.id,
-      email: admin.email,
-      role: admin.role,
+      sessionId ,
+      data: {
+        id: admin.id,
+        email: admin.email,
+        role: admin.role,
+      },
     };
   },
 };
