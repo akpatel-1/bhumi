@@ -23,4 +23,9 @@ export const repository = {
     await redis.set(key, data, { ex: ADMIN_SESSION_CONFIG.SESSION_TTL });
     return sessionId;
   },
+
+  delete: async (sessionId: string) => {
+    const key = `${ADMIN_SESSION_CONFIG.SESSION_PREFIX}${sessionId}`;
+    await redis.del(key);
+  },
 };

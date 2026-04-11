@@ -9,7 +9,17 @@ export const controller = {
     const { sessionId, data } = await service.authenticateAdmin(req.body);
 
     res.cookie(ADMIN_AUTH_CONFIG.COOKIE_NAME, sessionId, ADMIN_AUTH_CONFIG.COOKIE_OPTIONS);
-    
+
     sendResponse(res, { statusCode: 200, message: 'Login successful', data });
+  },
+
+  logoutAdmin: async (req: Request, res: Response) => {
+    const sessionId = req.cookies?.admin_sid;
+
+    await service.unauthenticateAdmin(sessionId);
+
+    res.clearCookie(ADMIN_AUTH_CONFIG.COOKIE_NAME, ADMIN_AUTH_CONFIG.CLEAR_COOKIE_OPTIONS);
+
+    sendResponse(res, { message: 'Logged out successfully' });
   },
 };

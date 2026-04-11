@@ -22,12 +22,17 @@ export const service = {
     const sessionId = await repository.create(admin.id, admin.role);
 
     return {
-      sessionId ,
+      sessionId,
       data: {
         id: admin.id,
         email: admin.email,
         role: admin.role,
       },
     };
+  },
+
+  unauthenticateAdmin: async (sessionId?: string) => {
+    if (!sessionId) return;
+    return repository.delete(sessionId);
   },
 };
