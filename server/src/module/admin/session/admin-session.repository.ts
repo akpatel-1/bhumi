@@ -10,22 +10,20 @@ type AdminSession = {
   expiresAt: string;
 };
 
-export const repository = {
-  create: async (adminId: string, role: string): Promise<string> => {
-    const sessionId = crypto.randomUUID();
-    const key = `${ADMIN_SESSION_CONFIG.SESSION_PREFIX}${sessionId}`;
-    const data: AdminSession = {
-      adminId,
-      role,
-      createdAt: new Date().toISOString(),
-      expiresAt: new Date(Date.now() + ADMIN_SESSION_CONFIG.SESSION_TTL * 1000).toDateString(),
-    };
-    await redis.set(key, data, { ex: ADMIN_SESSION_CONFIG.SESSION_TTL });
-    return sessionId;
-  },
+export const createAdminSession = async (adminId: string, role: string): Promise<string> => {
+  const sessionId = crypto.randomUUID();
+  const key = `${ADMIN_SESSION_CONFIG.SESSION_PREFIX}${sessionId}`;
+  const data: AdminSession = {
+    adminId,
+    role,
+    createdAt: new Date().toISOString(),
+    expiresAt: new Date(Date.now() + ADMIN_SESSION_CONFIG.SESSION_TTL * 1000).toDateString(),
+  };
+  await redis.set(key, data, { ex: ADMIN_SESSION_CONFIG.SESSION_TTL });
+  return sessionId;
+};
 
-  delete: async (sessionId: string) => {
-    const key = `${ADMIN_SESSION_CONFIG.SESSION_PREFIX}${sessionId}`;
-    await redis.del(key);
-  },
+export const deleteAdminSession = async (sessionId: string) => {
+  const key = `${ADMIN_SESSION_CONFIG.SESSION_PREFIX}${sessionId}`;
+  await redis.del(key);
 };
