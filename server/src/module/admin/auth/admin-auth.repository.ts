@@ -6,7 +6,7 @@ type Admin = {
   password_hash: string;
   role: string;
 };
-export const findAdminByEmail = async (email: string): Promise<Admin | undefined> => {
+export const findAdminByEmail = async (email: string): Promise<Admin | null> => {
   const result = await pool.query(
     `SELECT id, email, password_hash, role
       FROM users WHERE email = $1 
@@ -14,5 +14,5 @@ export const findAdminByEmail = async (email: string): Promise<Admin | undefined
       LIMIT 1`,
     [email],
   );
-  return result.rows[0] || undefined;
+  return result.rows[0] || null;
 };
