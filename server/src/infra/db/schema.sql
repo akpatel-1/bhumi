@@ -8,8 +8,15 @@ create table if not exists users (
   password_hash text,
   role user_role not null,
   is_active boolean not null default true,
-  created_at timestamptz not null default now()
+  created_at timestamptz not null default now(),
+  constraint password_role_check
+    check (
+      (role = 'user' and password_hash is null)
+      or
+      (role <> 'user' and password_hash is not null)
+    )
 );
+
 
 create index idx_users_email on users (email);
 
