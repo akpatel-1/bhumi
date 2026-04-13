@@ -9,4 +9,9 @@ export const ERROR_CONFIG = {
     message: 'Failed to send OTP email',
     code: 'EMAIL_SEND_FAILED',
   },
+  INVALID_OR_EXPIRED_OTP: {
+    statusCode: 400,
+    message: 'Invalid or expired OTP',
+    code: 'INVALID_OR_EXPIRED_OTP',
+  },
 };

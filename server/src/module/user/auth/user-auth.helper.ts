@@ -18,3 +18,22 @@ export const generateOtp = () => {
 export const generateHash = (value: string) => {
   return crypto.createHash('sha256').update(value).digest('hex');
 };
+
+export const matchOtp = (otp: string, storedOtp: string): boolean => {
+  if (!process.env.OTP_SECRET) {
+    throw new Error('Missing OTP_SECRET in environment variables');
+  }
+
+  const generatedHash = crypto
+    .createHmac('sha256', process.env.OTP_SECRET)
+    .update(otp.toString())
+    .digest('hex');
+
+  const bufferA = Buffer.from(generatedHash, 'hex');
+  const bufferB = Buffer.from(storedOtp, 'hex');
+
+  if (bufferA.length !== bufferB.length) {
+    return false;
+  }
+  return crypto.timingSafeEqual(bufferA, bufferB);
+};
