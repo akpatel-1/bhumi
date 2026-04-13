@@ -2,7 +2,7 @@ import argon2 from 'argon2';
 
 import { ERROR_CONFIG } from '../../error-config.js';
 import { ApiError } from '../../utils/api-error.js';
-import { createAdminSession, deleteAdminSession } from '../session/admin-session.repository.js';
+import { createAdminSession, deleteAdminSession } from '../session/admin-session.redis.js';
 import { findAdminByEmail } from './admin-auth.repository.js';
 
 export const authenticateAdmin = async ({
