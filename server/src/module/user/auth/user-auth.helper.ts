@@ -1,5 +1,6 @@
 import crypto from 'crypto';
 import 'dotenv/config';
+import jwt from 'jsonwebtoken';
 
 export const generateOtp = () => {
   if (!process.env.OTP_SECRET) {
@@ -36,4 +37,23 @@ export const matchOtp = (otp: string, storedOtp: string): boolean => {
     return false;
   }
   return crypto.timingSafeEqual(bufferA, bufferB);
+};
+
+export const generateRefreshToken = (): {
+  rawRefreshToken: string;
+  hashedRefreshToken: string;
+} => {
+  const rawRefreshToken = crypto.randomBytes(32).toString('hex');
+  const hashedRefreshToken = crypto.createHash('sha256').update(rawRefreshToken).digest('hex');
+  return { rawRefreshToken, hashedRefreshToken };
+};
+
+export const generateAccessToken = (userId: string, role: string): string => {
+  if (!process.env.ACCESS_TOKEN_SECRET) {
+    throw new Error('Missing ACCESS_TOKEN_SECRET in environment variables');
+  }
+
+  return jwt.sign({ userId, role }, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: '30m',
+  });
 };

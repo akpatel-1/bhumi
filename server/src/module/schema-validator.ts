@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from 'express';
 import type { ZodSchema } from 'zod';
 
-import { ApiError } from './utils/api-error.js';
+import { ApiError } from '../utils/api-error.js';
 
 export function validateSchema(schema: ZodSchema, source: 'body' | 'query' | 'params' = 'body') {
   return (req: Request, res: Response, next: NextFunction): void => {

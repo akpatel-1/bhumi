@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 
-import { sendResponse } from '../../utils/response-helper.js';
+import { sendResponse } from '../../../utils/response-helper.js';
 import { ADMIN_AUTH_CONFIG } from './admin-auth.config.js';
 import { authenticateAdmin, unauthenticateAdmin } from './admin-auth.services.js';
 

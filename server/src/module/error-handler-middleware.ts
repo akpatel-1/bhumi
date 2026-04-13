@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from 'express';
 
-import { ApiError } from './utils/api-error.js';
+import { ApiError } from '../utils/api-error.js';
 
 export function globalErrorHandler(err: unknown, req: Request, res: Response, next: NextFunction) {
   if (err instanceof ApiError) {
