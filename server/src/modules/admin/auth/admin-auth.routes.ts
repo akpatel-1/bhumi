@@ -1,11 +1,11 @@
 import express from 'express';
 
+import { loginUser, logoutUser } from '../../../shared/auth/auth.controller.js';
+import { authSchema } from '../../../shared/auth/auth.schema.js';
 import { validateSchema } from '../../schema-validator.js';
-import { loginAdmin, logoutAdmin } from './admin-auth.controller.js';
-import { adminAuthSchema } from './admin-auth.schema.js';
 
 export const adminAuthRoutes = express.Router();
 
-adminAuthRoutes.post('/auth/login', validateSchema(adminAuthSchema), loginAdmin);
+adminAuthRoutes.post('/auth/login', validateSchema(authSchema), loginUser('admin'));
 
-adminAuthRoutes.post('/auth/logout', logoutAdmin);
+adminAuthRoutes.post('/auth/logout', logoutUser('admin'));

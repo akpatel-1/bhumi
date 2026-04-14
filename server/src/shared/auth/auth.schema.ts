@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const adminAuthSchema = z.object({
+export const authSchema = z.object({
   email: z.string().trim().min(1, 'Email is required').toLowerCase().email('Invalid email format'),
 
   password: z

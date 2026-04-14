@@ -6,6 +6,7 @@
     "moduleResolution": "NodeNext",
     "target": "ES2022",
     "types": ["node"],
+    "lib": ["ES2022"],
     "sourceMap": true,
     "strict": true,
     "verbatimModuleSyntax": true,
