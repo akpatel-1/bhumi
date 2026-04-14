@@ -14,4 +14,9 @@ export const ERROR_CONFIG = {
     message: 'Invalid or expired OTP',
     code: 'INVALID_OR_EXPIRED_OTP',
   },
+  SESSION_EXPIRED: {
+    statusCode: 401,
+    message: 'Your session has expired, please login again',
+    code: 'SESSION_EXPIRED',
+  },
 };

@@ -26,7 +26,7 @@ export const createUserSession = async (userId: string, role: string): Promise<s
     userId,
     role,
     createdAt: new Date().toISOString(),
-    expiresAt: new Date(Date.now() + SESSION_CONFIG.SESSION_TTL * 1000).toDateString(),
+    expiresAt: new Date(Date.now() + SESSION_CONFIG.SESSION_TTL * 1000).toISOString(),
   };
   await redis.set(key, data, { ex: SESSION_CONFIG.SESSION_TTL });
   return sessionId;
@@ -35,4 +35,12 @@ export const createUserSession = async (userId: string, role: string): Promise<s
 export const deleteUserSession = async (sessionId: string, role: string) => {
   const key = getSessionKey(sessionId, role);
   await redis.del(key);
+};
+
+export const getUserSession = async (
+  sessionId: string,
+  role: string,
+): Promise<UserSession | null> => {
+  const key = getSessionKey(sessionId, role);
+  return await redis.get(key);
 };
