@@ -1,9 +1,8 @@
+import { ERROR_CONFIG } from '@modules/error-config.js';
+import { findUserByEmail } from '@shared/auth/auth.repository.js';
+import { createUserSession, deleteUserSession } from '@shared/session/session.redis.js';
+import { ApiError } from '@utils/api-error.js';
 import argon2 from 'argon2';
-
-import { ERROR_CONFIG } from '../../modules/error-config.js';
-import { ApiError } from '../../utils/api-error.js';
-import { createUserSession, deleteUserSession } from '../session/session.redis.js';
-import { findUserByEmail } from './auth.repository.js';
 
 interface AuthCredentials {
   email: string;

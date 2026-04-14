@@ -1,7 +1,7 @@
 import crypto from 'node:crypto';
 
-import { redis } from '../../infra/redis/redis.js';
-import { SESSION_CONFIG } from './session.config.js';
+import { redis } from '@infra/redis/redis.js';
+import { SESSION_CONFIG } from '@shared/session/session.config.js';
 
 type UserSession = {
   userId: string;

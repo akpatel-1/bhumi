@@ -5,6 +5,13 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "target": "ES2022",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@infra/*": ["./src/infra/*"],
+      "@modules/*": ["./src/modules/*"],
+      "@shared/*": ["./src/shared/*"],
+      "@utils/*": ["./src/utils/*"]
+    },
     "types": ["node"],
     "lib": ["ES2022"],
     "sourceMap": true,

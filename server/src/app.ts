@@ -2,8 +2,8 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
 
-import { router } from './index.js';
-import { globalErrorHandler } from './modules/error-handler-middleware.js';
+import { router } from '@/index.js';
+import { globalErrorHandler } from '@modules/error-handler-middleware.js';
 
 export const app = express();
 

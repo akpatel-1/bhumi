@@ -1,5 +1,5 @@
-import resend from '../../../infra/email/email.js';
-import { otpTemplate } from '../../../infra/email/template/otp-template.js';
+import resend from '@infra/email/email.js';
+import { otpTemplate } from '@infra/email/template/otp-template.js';
 
 export const sendVerificationOtp = async (email: string, otp: number) => {
   await resend.emails.send({

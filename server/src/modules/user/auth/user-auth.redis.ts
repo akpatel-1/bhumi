@@ -1,5 +1,5 @@
-import { redis } from '../../../infra/redis/redis.js';
-import { USER_AUTH_CONFIG } from './user-auth.config.js';
+import { redis } from '@infra/redis/redis.js';
+import { USER_AUTH_CONFIG } from '@modules/user/auth/user-auth.config.js';
 
 export const storeUserOtp = async (hashedEmail: string, hashedOtp: string): Promise<void> => {
   const key = `${USER_AUTH_CONFIG.OTP_PREFIX}${hashedEmail}`;

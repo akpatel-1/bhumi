@@ -1,8 +1,7 @@
+import { validateSchema } from '@modules/schema-validator.js';
+import { requestUserOtp, verifyUserOtp } from '@modules/user/auth/user-auth.controller.js';
+import { userAuthSchema, userEmailSchema } from '@modules/user/auth/user-auth.schema.js';
 import express from 'express';
-
-import { validateSchema } from '../../schema-validator.js';
-import { requestUserOtp, verifyUserOtp } from './user-auth.controller.js';
-import { userAuthSchema, userEmailSchema } from './user-auth.schema.js';
 
 export const userAuthRoutes = express.Router();
 

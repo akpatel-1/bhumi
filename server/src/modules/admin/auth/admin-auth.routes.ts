@@ -1,8 +1,8 @@
 import express from 'express';
 
-import { loginUser, logoutUser } from '../../../shared/auth/auth.controller.js';
-import { authSchema } from '../../../shared/auth/auth.schema.js';
-import { validateSchema } from '../../schema-validator.js';
+import { validateSchema } from '@/modules/schema-validator.js';
+import { loginUser, logoutUser } from '@/shared/auth/auth.controller.js';
+import { authSchema } from '@/shared/auth/auth.schema.js';
 
 export const adminAuthRoutes = express.Router();
 

@@ -1,8 +1,7 @@
+import { AUTH_CONFIG } from '@shared/auth/auth.config.js';
+import { authenticateUser, unauthenticateUser } from '@shared/auth/auth.services.js';
+import { sendResponse } from '@utils/response-helper.js';
 import type { Request, Response } from 'express';
-
-import { sendResponse } from '../../utils/response-helper.js';
-import { AUTH_CONFIG } from './auth.config.js';
-import { authenticateUser, unauthenticateUser } from './auth.services.js';
 
 export const loginUser = (role: string) => {
   return async (req: Request, res: Response) => {

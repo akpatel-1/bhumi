@@ -1,4 +1,4 @@
-import { pool } from '../../infra/db/db.js';
+import { pool } from '@infra/db/db.js';
 
 type User = {
   id: string;

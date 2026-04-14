@@ -1,18 +1,21 @@
-import { pool } from '../../../infra/db/db.js';
-import { ApiError } from '../../../utils/api-error.js';
-import { withTransaction } from '../../../utils/transaction.js';
-import { ERROR_CONFIG } from '../../error-config.js';
-import { USER_AUTH_CONFIG } from './user-auth.config.js';
+import { pool } from '@infra/db/db.js';
+import { ERROR_CONFIG } from '@modules/error-config.js';
+import { USER_AUTH_CONFIG } from '@modules/user/auth/user-auth.config.js';
 import {
   generateAccessToken,
   generateHash,
   generateOtp,
   generateRefreshToken,
   matchOtp,
-} from './user-auth.helper.js';
-import { sendVerificationOtp } from './user-auth.mailer.js';
-import { deleteUserOtp, getUserOtp, storeUserOtp } from './user-auth.redis.js';
-import { insertUserIntoRefreshTokens, insertUserIntoUsers } from './user-auth.repository.js';
+} from '@modules/user/auth/user-auth.helper.js';
+import { sendVerificationOtp } from '@modules/user/auth/user-auth.mailer.js';
+import { deleteUserOtp, getUserOtp, storeUserOtp } from '@modules/user/auth/user-auth.redis.js';
+import {
+  insertUserIntoRefreshTokens,
+  insertUserIntoUsers,
+} from '@modules/user/auth/user-auth.repository.js';
+import { ApiError } from '@utils/api-error.js';
+import { withTransaction } from '@utils/transaction.js';
 
 export const sendOtpToUser = async ({ email }: { email: string }) => {
   const hashedEmail = generateHash(email);
