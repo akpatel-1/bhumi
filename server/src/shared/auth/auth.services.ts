@@ -9,7 +9,10 @@ interface AuthCredentials {
   password: string;
 }
 
-export const authenticateUser = async (credentials: AuthCredentials, role: string) => {
+export const authenticateUser = async (
+  credentials: AuthCredentials,
+  role: 'admin' | 'registrar',
+) => {
   const { email, password } = credentials;
 
   const user = await findUserByEmail(email, role);
@@ -36,7 +39,10 @@ export const authenticateUser = async (credentials: AuthCredentials, role: strin
   };
 };
 
-export const unauthenticateUser = async (sessionId: string | undefined, role: string) => {
+export const unauthenticateUser = async (
+  sessionId: string | undefined,
+  role: 'admin' | 'registrar',
+) => {
   if (!sessionId) return;
   return deleteUserSession(sessionId, role);
 };

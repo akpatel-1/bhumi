@@ -3,7 +3,7 @@ import { authenticateUser, unauthenticateUser } from '@shared/auth/auth.services
 import { sendResponse } from '@utils/response-helper.js';
 import type { Request, Response } from 'express';
 
-export const loginUser = (role: string) => {
+export const loginUser = (role: 'admin' | 'registrar') => {
   return async (req: Request, res: Response) => {
     const { sessionId, data } = await authenticateUser(req.body, role);
 
@@ -15,7 +15,7 @@ export const loginUser = (role: string) => {
   };
 };
 
-export const logoutUser = (role: string) => {
+export const logoutUser = (role: 'admin' | 'registrar') => {
   return async (req: Request, res: Response) => {
     const cookieName =
       role === 'admin' ? AUTH_CONFIG.ADMIN_COOKIE_NAME : AUTH_CONFIG.REGISTRAR_COOKIE_NAME;

@@ -3,25 +3,22 @@ import crypto from 'node:crypto';
 import { redis } from '@infra/redis/redis.js';
 import { SESSION_CONFIG } from '@shared/session/session.config.js';
 
+import { AUTH_CONFIG } from '../auth/auth.config.js';
+
 type UserSession = {
   userId: string;
-  role: string;
+  role: 'admin' | 'registrar';
   createdAt: string;
   expiresAt: string;
 };
 
-const getSessionKey = (sessionId: string, role: string) => {
-  const sessionName =
-    role === 'admin'
-      ? SESSION_CONFIG.ADMIN_SESSION_PREFIX
-      : SESSION_CONFIG.REGISTRAR_SESSION_PREFIX;
-  return `${sessionName}${sessionId}`;
-};
-
-export const createUserSession = async (userId: string, role: string): Promise<string> => {
+export const createUserSession = async (
+  userId: string,
+  role: 'admin' | 'registrar',
+): Promise<string> => {
   const sessionId = crypto.randomUUID();
 
-  const key = getSessionKey(sessionId, role);
+  const key = `${AUTH_CONFIG.getCookieName(role)}${sessionId}`;
   const data: UserSession = {
     userId,
     role,
@@ -32,15 +29,16 @@ export const createUserSession = async (userId: string, role: string): Promise<s
   return sessionId;
 };
 
-export const deleteUserSession = async (sessionId: string, role: string) => {
-  const key = getSessionKey(sessionId, role);
+export const deleteUserSession = async (sessionId: string, role: 'admin' | 'registrar') => {
+  const key = `${AUTH_CONFIG.getCookieName(role)}${sessionId}`;
   await redis.del(key);
 };
 
 export const getUserSession = async (
   sessionId: string,
-  role: string,
+  role: 'admin' | 'registrar',
 ): Promise<UserSession | null> => {
-  const key = getSessionKey(sessionId, role);
+  const key = `${AUTH_CONFIG.getCookieName(role)}${sessionId}`;
+
   return await redis.get(key);
 };

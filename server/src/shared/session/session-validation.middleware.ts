@@ -5,11 +5,9 @@ import type { NextFunction, Request, Response } from 'express';
 import { ERROR_CONFIG } from '@/modules/error-config.js';
 import { ApiError } from '@/utils/api-error.js';
 
-export const validateSession = (role: string) => {
+export const validateSession = (role: 'admin' | 'registrar') => {
   return async (req: Request, res: Response, next: NextFunction) => {
-    const cookieName =
-      role === 'admin' ? AUTH_CONFIG.ADMIN_COOKIE_NAME : AUTH_CONFIG.REGISTRAR_COOKIE_NAME;
-    const sessionId = req.cookies[cookieName];
+    const sessionId = req.cookies[AUTH_CONFIG.getCookieName(role)];
 
     if (!sessionId) {
       throw new ApiError(ERROR_CONFIG.SESSION_EXPIRED);
@@ -18,7 +16,7 @@ export const validateSession = (role: string) => {
     const user = await getUserSession(sessionId, role);
 
     if (!user) {
-      res.clearCookie(cookieName, AUTH_CONFIG.CLEAR_COOKIE_OPTIONS);
+      res.clearCookie(AUTH_CONFIG.getCookieName(role), AUTH_CONFIG.CLEAR_COOKIE_OPTIONS);
       throw new ApiError(ERROR_CONFIG.SESSION_EXPIRED);
     }
 

@@ -4,10 +4,13 @@ type User = {
   id: string;
   email: string;
   password_hash: string;
-  role: string;
+  role: 'admin' | 'registrar';
 };
 
-export const findUserByEmail = async (email: string, role: string): Promise<User | null> => {
+export const findUserByEmail = async (
+  email: string,
+  role: 'admin' | 'registrar',
+): Promise<User | null> => {
   const result = await pool.query(
     `SELECT id, email, password_hash, role
       FROM users 
