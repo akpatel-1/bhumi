@@ -3,7 +3,7 @@ import cors from 'cors';
 import express from 'express';
 
 import { router } from './index.js';
-import { globalErrorHandler } from './module/error-handler-middleware.js';
+import { globalErrorHandler } from './modules/error-handler-middleware.js';
 
 export const app = express();
 
