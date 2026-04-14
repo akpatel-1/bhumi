@@ -19,4 +19,9 @@ export const ERROR_CONFIG = {
     message: 'Your session has expired, please login again',
     code: 'SESSION_EXPIRED',
   },
+  REGISTRAR_ALREADY_EXISTS: {
+    statusCode: 409,
+    message: 'Registrar already exists',
+    code: 'REGISTRAR_ALREADY_EXISTS',
+  },
 };
