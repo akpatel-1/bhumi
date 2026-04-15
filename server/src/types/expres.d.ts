@@ -1,4 +1,4 @@
-import 'express';
+import type { Request } from 'express';
 
 declare global {
   namespace Express {
@@ -7,3 +7,7 @@ declare global {
     }
   }
 }
+
+export type AuthenticatedRequest = Request & {
+  user: { id: string; role: 'admin' | 'registrar' | 'user' };
+};
