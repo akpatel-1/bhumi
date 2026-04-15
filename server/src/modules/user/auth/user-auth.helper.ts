@@ -42,8 +42,8 @@ export const generateRefreshToken = (): {
   return { rawRefreshToken, hashedRefreshToken };
 };
 
-export const generateAccessToken = (userId: string, role: string): string => {
-  return jwt.sign({ userId, role }, env.accessTokenSecret, {
+export const generateAccessToken = (id: string, role: string): string => {
+  return jwt.sign({ id, role }, env.accessTokenSecret, {
     expiresIn: '30m',
   });
 };

@@ -26,7 +26,7 @@ interface RegistrarResponse {
 
 export const registerRegistrar = async (
   credentials: Credentials,
-  { id }: { id: string },
+  id: string,
 ): Promise<RegistrarResponse> => {
   const { email, password, district } = credentials;
   const passwordHash = await argon2.hash(password, {

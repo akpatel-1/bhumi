@@ -30,17 +30,20 @@ export const sendOtpToUser = async ({ email }: { email: string }) => {
   }
 };
 
-export const verifyOtpAndAuthenticateUser = async ({
-  email,
-  otp,
-}: {
+interface Credentials {
   email: string;
   otp: string;
-}): Promise<{
+}
+
+interface SessionData {
   accessToken: string;
   rawRefreshToken: string;
   data: object;
-}> => {
+}
+export const verifyOtpAndAuthenticateUser = async (
+  credentials: Credentials,
+): Promise<SessionData> => {
+  const { email, otp } = credentials;
   const hashedEmail = generateHash(email);
   const storedOtp = await getUserOtp(hashedEmail);
 

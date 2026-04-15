@@ -6,21 +6,21 @@ import { SESSION_CONFIG } from '@shared/session/session.config.js';
 import { AUTH_CONFIG } from '../auth/auth.config.js';
 
 type UserSession = {
-  userId: string;
+  id: string;
   role: 'admin' | 'registrar';
   createdAt: string;
   expiresAt: string;
 };
 
 export const createUserSession = async (
-  userId: string,
+  id: string,
   role: 'admin' | 'registrar',
 ): Promise<string> => {
   const sessionId = crypto.randomUUID();
 
   const key = `${AUTH_CONFIG.getCookieName(role)}${sessionId}`;
   const data: UserSession = {
-    userId,
+    id,
     role,
     createdAt: new Date().toISOString(),
     expiresAt: new Date(Date.now() + SESSION_CONFIG.SESSION_TTL * 1000).toISOString(),

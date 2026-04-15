@@ -20,8 +20,8 @@ export const validateSession = (role: 'admin' | 'registrar') => {
       throw new ApiError(ERROR_CONFIG.SESSION_EXPIRED);
     }
 
-    res.locals.user = {
-      id: user.userId,
+    req.user = {
+      id: user.id,
       role: user.role,
     };
 
