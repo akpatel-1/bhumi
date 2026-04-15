@@ -1,7 +1,9 @@
 import 'dotenv/config';
 import type { CookieOptions } from 'express';
 
-const isProd = process.env.NODE_ENV === 'production';
+import { env } from '@/config/env.js';
+
+const isProd = env.nodeEnv === 'production';
 export const AUTH_CONFIG = {
   ADMIN_COOKIE_NAME: 'admin_sid',
   REGISTRAR_COOKIE_NAME: 'registrar_sid',

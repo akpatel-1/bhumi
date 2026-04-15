@@ -3,13 +3,14 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
 
+import { env } from '@/config/env.js';
 import { router } from '@/index.js';
 
 export const app = express();
 
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL,
+    origin: env.frontendUrl,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   }),

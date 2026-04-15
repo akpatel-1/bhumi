@@ -2,14 +2,12 @@ import crypto from 'crypto';
 import 'dotenv/config';
 import jwt from 'jsonwebtoken';
 
-export const generateOtp = () => {
-  if (!process.env.OTP_SECRET) {
-    throw new Error('Missing OTP_SECRET in environment variables');
-  }
+import { env } from '@/config/env.js';
 
+export const generateOtp = () => {
   const rawOtp = crypto.randomInt(100000, 1000000);
   const hashedOtp = crypto
-    .createHmac('sha256', process.env.OTP_SECRET)
+    .createHmac('sha256', env.otpSecret)
     .update(rawOtp.toString())
     .digest('hex');
 
@@ -21,12 +19,8 @@ export const generateHash = (value: string) => {
 };
 
 export const matchOtp = (otp: string, storedOtp: string): boolean => {
-  if (!process.env.OTP_SECRET) {
-    throw new Error('Missing OTP_SECRET in environment variables');
-  }
-
   const generatedHash = crypto
-    .createHmac('sha256', process.env.OTP_SECRET)
+    .createHmac('sha256', env.otpSecret)
     .update(otp.toString())
     .digest('hex');
 
@@ -49,11 +43,7 @@ export const generateRefreshToken = (): {
 };
 
 export const generateAccessToken = (userId: string, role: string): string => {
-  if (!process.env.ACCESS_TOKEN_SECRET) {
-    throw new Error('Missing ACCESS_TOKEN_SECRET in environment variables');
-  }
-
-  return jwt.sign({ userId, role }, process.env.ACCESS_TOKEN_SECRET, {
+  return jwt.sign({ userId, role }, env.accessTokenSecret, {
     expiresIn: '30m',
   });
 };

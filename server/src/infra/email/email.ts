@@ -1,6 +1,8 @@
 import 'dotenv/config';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.EMAIL_API);
+import { env } from '@/config/env.js';
+
+const resend = new Resend(env.emailApi);
 
 export default resend;

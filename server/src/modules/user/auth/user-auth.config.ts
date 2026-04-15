@@ -1,6 +1,8 @@
 import type { CookieOptions } from 'express';
 
-const isProd = process.env.NODE_ENV === 'production';
+import { env } from '@/config/env.js';
+
+const isProd = env.nodeEnv === 'production';
 
 export const USER_AUTH_CONFIG = {
   OTP_PREFIX: 'user:otp:',
