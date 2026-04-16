@@ -3,6 +3,8 @@ import { Pool } from 'pg';
 interface existingUser {
   user_id: string;
   status: string;
+  rejected_reason: string;
+  submitted_at: Date;
 }
 
 export const findUserKycByUserId = async (
@@ -10,7 +12,7 @@ export const findUserKycByUserId = async (
   userId: string,
 ): Promise<existingUser | null> => {
   const result = await pool.query(
-    `SELECT user_id, status FROM user_kyc
+    `SELECT user_id, status, rejection_reason, submitted_at FROM user_kyc
     WHERE user_id = $1`,
     [userId],
   );

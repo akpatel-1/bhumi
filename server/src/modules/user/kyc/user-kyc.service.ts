@@ -31,3 +31,7 @@ export const submitKyc = async (data: KycData, file: Express.Multer.File, userId
     await deleteFromR2(documentKey);
   }
 };
+
+export const kycStatus = async (userId: string) => {
+  return await findUserKycByUserId(pool, userId);
+};
