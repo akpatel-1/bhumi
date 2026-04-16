@@ -18,8 +18,15 @@ export const fetchUsersKyc = async (
   status: string,
 ): Promise<UserKyc[]> => {
   const result = await pool.query(
-    `SELECT uk.user_id, uk.phone, uk.address, uk.pincode,
-            uk.district, uk.state, uk.pan_number
+    `SELECT uk.user_id,
+            uk.pan_name,
+            uk.phone,
+            uk.address,
+            uk.pincode,
+            uk.district,
+            uk.state,
+            uk.pan_number,
+            uk.pan_document_key
      FROM user_kyc uk
      JOIN registrar_profiles rp 
        ON rp.district = uk.district 
@@ -60,9 +67,12 @@ export const updateUserKyc = async (
 };
 
 export const insertIntoUserProfile = async (client: PoolClient, data: userProfile) => {
-  await client.query(`
+  await client.query(
+    `
     INSERT INTO user_profiles 
     (user_id, pan_name, phone, district, state)
     VALUES ($1, $2, $3, $4, $5)
-    `);
+    `,
+    [data.user_id, data.pan_name, data.phone, data.district, data.state],
+  );
 };

@@ -1,4 +1,6 @@
-import { DeleteObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
+import { DeleteObjectCommand, GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
+import '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { v4 as uuidv4 } from 'uuid';
 
 import { env } from '@/config/env.js';
@@ -30,4 +32,13 @@ export const deleteFromR2 = async (key: string): Promise<void> => {
       Key: key,
     }),
   );
+};
+
+export const getPresignedUrl = async (key: string): Promise<string> => {
+  const command = new GetObjectCommand({
+    Bucket: env.r2BucketName!,
+    Key: key,
+  });
+
+  return getSignedUrl(r2, command, { expiresIn: 3600 });
 };

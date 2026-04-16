@@ -15,7 +15,7 @@ export function validateSchema(schema: ZodSchema, source: 'body' | 'query' | 'pa
       });
     }
 
-    req[source] = result.data;
+    Object.assign(req[source], result.data);
 
     next();
   };
