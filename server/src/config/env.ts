@@ -10,6 +10,10 @@ const requiredKeys = [
   'UPSTASH_REDIS_REST_URL',
   'UPSTASH_REDIS_REST_TOKEN',
   'EMAIL_API',
+  'R2_BUCKET_NAME',
+  'R2_ENDPOINT',
+  'R2_ACCESS_KEY',
+  'R2_SECRET_KEY',
 ];
 
 for (const key of requiredKeys) {
@@ -31,4 +35,8 @@ export const env = {
   upstashRedisRestToken: process.env.UPSTASH_REDIS_REST_TOKEN!,
 
   emailApi: process.env.EMAIL_API!,
+  r2BucketName: process.env.R2_BUCKET_NAME!,
+  r2Endpoint: process.env.R2_ENDPOINT!,
+  r2AccessKey: process.env.R2_ACCESS_KEY!,
+  r2SecretKey: process.env.R2_SECRET_KEY!,
 } as const;
