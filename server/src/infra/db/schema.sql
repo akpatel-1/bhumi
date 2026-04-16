@@ -67,8 +67,8 @@ create table if not exists user_profiles (
   user_id uuid unique not null references users (id) on delete cascade,
   pan_name text,
   phone text,
-  district text,
-  state text,
+  district citext,
+  state citext,
   is_suspended boolean not null default false,
   suspension_reason text,
   created_at timestamptz default now()
