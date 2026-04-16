@@ -9,3 +9,11 @@ export const kycQuerySchema = z.object({
 export const userIdParamSchema = z.object({
   userId: z.string().uuid({ message: 'Invalid userId format' }),
 });
+
+export const userRejectionReason = z.object({
+  rejection_reason: z
+    .string({ message: 'Rejection reason is required' })
+    .trim()
+    .min(1, { message: 'Rejection reason is required' })
+    .max(500, { message: 'Rejection reason is too long' }),
+});

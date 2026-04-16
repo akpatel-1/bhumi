@@ -44,4 +44,9 @@ export const ERROR_CONFIG = {
     message: 'Verification document is required',
     code: 'DOCUMENT_REQUIRED',
   },
+  KYC_NOT_FOUND: {
+    statusCode: 404,
+    message: 'Pending KYC request not found for this user.',
+    code: 'KYC_NOT_FOUND',
+  },
 };

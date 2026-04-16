@@ -46,7 +46,7 @@ interface userProfile {
   state: string;
 }
 
-export const updateUserKyc = async (
+export const markKycAsApproved = async (
   client: PoolClient,
   userId: string,
   reviewerId: string,
@@ -75,4 +75,27 @@ export const insertIntoUserProfile = async (client: PoolClient, data: userProfil
     `,
     [data.user_id, data.pan_name, data.phone, data.district, data.state],
   );
+};
+
+export const markKycAsRejected = async (
+  pool: Pool,
+  userId: string,
+  reviewerId: string,
+  rejectionReason: string,
+): Promise<boolean> => {
+  const result = await pool.query(
+    `
+    UPDATE user_kyc
+    SET status = 'rejected',
+        rejection_reason = $3,
+        reviewed_at = NOW(),
+        reviewed_by = $2
+    WHERE user_id = $1 
+      AND status = 'pending'
+    RETURNING user_id;
+`,
+    [userId, reviewerId, rejectionReason],
+  );
+
+  return result.rowCount === 1;
 };
