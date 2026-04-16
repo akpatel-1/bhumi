@@ -24,4 +24,24 @@ export const ERROR_CONFIG = {
     message: 'Registrar already exists',
     code: 'REGISTRAR_ALREADY_EXISTS',
   },
+  UNAUTHORIZED: {
+    statusCode: 401,
+    message: 'Unauthorized. Please log in.',
+    code: 'UNAUTHORIZED',
+  },
+  INVALID_TOKEN: {
+    statusCode: 401,
+    message: 'Invalid or expired token.',
+    code: 'INVALID_TOKEN',
+  },
+  FILE_TYPE_MISMATCH: {
+    statusCode: 400,
+    message: 'Invalid file type. Only JPG and PNG are allowed.',
+    code: 'FILE_TYPE_MISMATCH',
+  },
+  DOCUMENT_REQUIRED: {
+    statusCode: 400,
+    message: 'Verification document is required',
+    code: 'DOCUMENT_REQUIRED',
+  },
 };
