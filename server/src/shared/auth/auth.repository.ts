@@ -16,7 +16,6 @@ export const findUserByEmail = async (
       FROM users 
       WHERE email = $1 
       AND role = $2
-      AND is_active = true
       LIMIT 1`,
     [email, role],
   );

@@ -11,8 +11,7 @@ export const findRegistrarByEmail = async (pool: Pool, email: string): Promise<U
     SELECT id, email 
     FROM users 
     WHERE email = $1
-    AND role = $2 
-    AND is_active = true`,
+    AND role = $2 `,
     [email, 'registrar'],
   );
   return result.rows[0] || null;
