@@ -42,8 +42,8 @@ create table if not exists user_kyc (
   phone text not null,
   address text not null,
   pincode text not null,
-  district text not null,
-  state text not null,
+  district citext not null,
+  state citext not null,
   pan_number text not null,
   pan_document_key text not null,
   status kyc_status not null default 'pending',
@@ -76,12 +76,12 @@ create table if not exists user_profiles (
 
 -- Registrar profiles table
 create table if not exists registrar_profiles (
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid not null references users (id) on delete cascade,
-  district text not null,
+  id uuid primary key default gen_random_uuid (),
+  user_id uuid not null references users (id) on delete CASCADE,
+  district citext not null,
+  state citext not null,
   created_by uuid not null references users (id),
   created_at timestamptz not null default now(),
-  unique (user_id)
+  unique (user_id),
+  unique (district, state)
 );
-
-

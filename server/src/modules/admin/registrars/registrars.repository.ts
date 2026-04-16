@@ -8,7 +8,7 @@ interface User {
 export const findRegistrarByEmail = async (pool: Pool, email: string): Promise<User | null> => {
   const result = await pool.query(
     `
-    SELECT id, email 
+    SELECT id 
     FROM users 
     WHERE email = $1
     AND role = $2 `,
@@ -40,11 +40,13 @@ export const insertIntoUsers = async (
 interface RegistrarData {
   userId: string;
   district: string;
+  state: string;
   createdBy: string;
 }
 
 interface RegistrarProfile {
   district: string;
+  state: string;
   created_at: Date;
 }
 export const insertIntoRegistrarProfile = async (
@@ -53,10 +55,10 @@ export const insertIntoRegistrarProfile = async (
 ): Promise<RegistrarProfile> => {
   const result = await client.query(
     `INSERT INTO registrar_profiles
-        (user_id, district, created_by)
-        VALUES($1, $2, $3)
-        RETURNING district, created_at`,
-    [data.userId, data.district, data.createdBy],
+        (user_id, district, state, created_by)
+        VALUES($1, $2, $3, $4)
+        RETURNING district, state, created_at`,
+    [data.userId, data.district, data.state, data.createdBy],
   );
   return result.rows[0];
 };
