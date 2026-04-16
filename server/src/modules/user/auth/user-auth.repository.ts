@@ -23,7 +23,7 @@ export const findUserById = async (client: PoolClient, userId: string): Promise<
   const result = await client.query(
     `SELECT id, email, role
      FROM users
-     WHERE id = $1 AND role = $2 AND is_active = true`,
+     WHERE id = $1 AND role = $2 `,
     [userId, 'user'],
   );
 
