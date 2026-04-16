@@ -1,6 +1,7 @@
 import { USER_AUTH_CONFIG } from '@modules/user/auth/user-auth.config.js';
 import {
   logout,
+  rotateSession,
   sendOtpToUser,
   verifyOtpAndAuthenticateUser,
 } from '@modules/user/auth/user-auth.services.js';
@@ -40,3 +41,22 @@ export const logoutUser = authHandler(async (req, res) => {
 
   sendResponse(res, { message: 'Logout successful' });
 });
+
+export const rotateUserSession = async (req: Request, res: Response) => {
+  const refreshToken = req.cookies[USER_AUTH_CONFIG.REFRESH_COOKIE_NAME];
+  const { accessToken, rawRefreshToken, data } = await rotateSession(refreshToken);
+
+  res.cookie(
+    USER_AUTH_CONFIG.ACCESS_COOKIE_NAME,
+    accessToken,
+    USER_AUTH_CONFIG.ACCESS_COOKIE_OPTIONS,
+  );
+
+  res.cookie(
+    USER_AUTH_CONFIG.REFRESH_COOKIE_NAME,
+    rawRefreshToken,
+    USER_AUTH_CONFIG.REFRESH_COOKIE_OPTIONS,
+  );
+
+  sendResponse(res, { statusCode: 200, message: 'Login successful', data });
+};

@@ -11,7 +11,6 @@ create table if not exists users (
   email citext unique not null,
   password_hash text,
   role user_role not null,
-  is_active boolean not null default true,
   created_at timestamptz not null default now(),
   constraint password_role_check check (
     (role = 'user' and password_hash is null)

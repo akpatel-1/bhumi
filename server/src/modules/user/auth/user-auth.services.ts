@@ -11,8 +11,11 @@ import {
 import { sendVerificationOtp } from '@modules/user/auth/user-auth.mailer.js';
 import { deleteUserOtp, getUserOtp, storeUserOtp } from '@modules/user/auth/user-auth.redis.js';
 import {
+  findUserById,
+  findUserSuspension,
   insertUserIntoRefreshTokens,
   insertUserIntoUsers,
+  revokeRefreshTokenByToken,
   revokeRefreshTokenByUserId,
 } from '@modules/user/auth/user-auth.repository.js';
 import { ApiError } from '@utils/api-error.js';
@@ -73,4 +76,48 @@ export const verifyOtpAndAuthenticateUser = async (
 
 export const logout = async (userId: string): Promise<void> => {
   return await revokeRefreshTokenByUserId(pool, userId);
+};
+
+export const rotateSession = async (refreshToken: string) => {
+  if (!refreshToken) {
+    throw new ApiError(ERROR_CONFIG.SESSION_EXPIRED);
+  }
+
+  const { rawRefreshToken, hashedRefreshToken } = generateRefreshToken();
+
+  const tokenHash = generateHash(refreshToken);
+  const user = await withTransaction(pool, async (client) => {
+    const userId = await revokeRefreshTokenByToken(client, tokenHash);
+
+    if (!userId) {
+      throw new ApiError(ERROR_CONFIG.SESSION_EXPIRED);
+    }
+
+    const status = await findUserSuspension(client, userId);
+    if (status?.is_suspended) {
+      throw new ApiError({
+        statusCode: 403,
+        message: `This account is suspended: ${status.suspension_reason}`,
+        code: 'USER_SUSPENDED',
+      });
+    }
+
+    await insertUserIntoRefreshTokens(
+      client,
+      userId,
+      hashedRefreshToken,
+      USER_AUTH_CONFIG.EXPIRE_AT,
+    );
+
+    const user = await findUserById(client, userId);
+
+    if (!user) {
+      throw new ApiError(ERROR_CONFIG.SESSION_EXPIRED);
+    }
+
+    return user;
+  });
+
+  const accessToken = generateAccessToken(user.id, user.role);
+  return { accessToken, rawRefreshToken, data: user };
 };

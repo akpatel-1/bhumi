@@ -2,6 +2,7 @@ import { validateSchema } from '@modules/schema-validator.js';
 import {
   logoutUser,
   requestUserOtp,
+  rotateUserSession,
   verifyUserOtp,
 } from '@modules/user/auth/user-auth.controller.js';
 import { userAuthSchema, userEmailSchema } from '@modules/user/auth/user-auth.schema.js';
@@ -16,3 +17,5 @@ userAuthRoutes.post('/auth/request-otp', validateSchema(userEmailSchema), reques
 userAuthRoutes.post('/auth/verify-otp', validateSchema(userAuthSchema), verifyUserOtp);
 
 userAuthRoutes.post('/auth/logout', validateUserSession, logoutUser);
+
+userAuthRoutes.post('/auth/refresh', rotateUserSession);

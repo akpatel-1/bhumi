@@ -5,6 +5,7 @@ type User = {
   email: string;
   role: string;
 };
+
 export const insertUserIntoUsers = async (client: PoolClient, email: string): Promise<User> => {
   const result = await client.query(
     `
@@ -16,6 +17,17 @@ export const insertUserIntoUsers = async (client: PoolClient, email: string): Pr
     [email, 'user'],
   );
   return result.rows[0];
+};
+
+export const findUserById = async (client: PoolClient, userId: string): Promise<User | null> => {
+  const result = await client.query(
+    `SELECT id, email, role
+     FROM users
+     WHERE id = $1 AND role = $2 AND is_active = true`,
+    [userId, 'user'],
+  );
+
+  return result.rows[0] ?? null;
 };
 
 export const insertUserIntoRefreshTokens = async (
@@ -39,4 +51,37 @@ export const revokeRefreshTokenByUserId = async (pool: Pool, userId: string) => 
     WHERE user_id = $1`,
     [userId],
   );
+};
+
+export const revokeRefreshTokenByToken = async (
+  client: PoolClient,
+  token: string,
+): Promise<string | null> => {
+  const result = await client.query(
+    `UPDATE refresh_tokens
+    SET revoked_at = NOW()
+    WHERE token_hash = $1
+      AND revoked_at IS NULL
+      AND expires_at > NOW()
+    RETURNING user_id`,
+    [token],
+  );
+  return result.rows[0]?.user_id ?? null;
+};
+
+interface Suspension {
+  is_suspended: boolean;
+  suspension_reason?: string;
+}
+
+export const findUserSuspension = async (
+  client: PoolClient,
+  userId: string,
+): Promise<Suspension | null> => {
+  const result = await client.query(
+    `SELECT is_suspended, suspension_reason
+    FROM user_profiles WHERE user_id = $1`,
+    [userId],
+  );
+  return result.rows[0] || null;
 };
