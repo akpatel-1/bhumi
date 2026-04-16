@@ -74,8 +74,9 @@ export const verifyOtpAndAuthenticateUser = async (
   return { accessToken, rawRefreshToken, data: user };
 };
 
-export const logout = async (userId: string): Promise<void> => {
-  return await revokeRefreshTokenByUserId(pool, userId);
+export const logout = async (userId: string, refreshToken: string): Promise<void> => {
+  const tokenHash = generateHash(refreshToken);
+  return await revokeRefreshTokenByUserId(pool, userId, tokenHash);
 };
 
 export const rotateSession = async (refreshToken: string) => {

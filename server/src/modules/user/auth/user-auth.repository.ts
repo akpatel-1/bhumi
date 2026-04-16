@@ -44,11 +44,12 @@ export const insertUserIntoRefreshTokens = async (
   );
 };
 
-export const revokeRefreshTokenByUserId = async (pool: Pool, userId: string) => {
+export const revokeRefreshTokenByUserId = async (pool: Pool, userId: string, tokenHash: string) => {
   await pool.query(
     `UPDATE refresh_tokens
     SET revoked_at = NOW()
-    WHERE user_id = $1`,
+    WHERE user_id = $1
+    AND token_hash = tokenHash`,
     [userId],
   );
 };

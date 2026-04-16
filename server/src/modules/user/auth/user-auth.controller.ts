@@ -34,7 +34,8 @@ export const verifyUserOtp = async (req: Request, res: Response) => {
 };
 
 export const logoutUser = authHandler(async (req, res) => {
-  await logout(req.user.id);
+  const refreshToken = req.cookies[USER_AUTH_CONFIG.REFRESH_COOKIE_NAME];
+  await logout(req.user.id, refreshToken);
 
   res.clearCookie(USER_AUTH_CONFIG.ACCESS_COOKIE_NAME, USER_AUTH_CONFIG.CLEAR_COOKIE_OPTIONS);
   res.clearCookie(USER_AUTH_CONFIG.REFRESH_COOKIE_NAME, USER_AUTH_CONFIG.CLEAR_COOKIE_OPTIONS);
