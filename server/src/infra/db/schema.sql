@@ -28,7 +28,7 @@ create table if not exists refresh_tokens (
   user_id uuid not null references users (id) on delete cascade,
   token_hash text unique not null,
   expires_at timestamptz not null,
-  is_revoked boolean not null default false,
+  revoked_at timestamptz,
   created_at timestamptz not null default now()
 );
 
@@ -46,7 +46,7 @@ create table if not exists user_kyc (
   district text not null,
   state text not null,
   pan_number text not null,
-  pan_document_url text not null,
+  pan_document_key text not null,
   status kyc_status not null default 'pending',
   rejection_reason text,
   submitted_at timestamptz default now(),

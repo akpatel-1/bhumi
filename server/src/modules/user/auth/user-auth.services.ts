@@ -13,6 +13,7 @@ import { deleteUserOtp, getUserOtp, storeUserOtp } from '@modules/user/auth/user
 import {
   insertUserIntoRefreshTokens,
   insertUserIntoUsers,
+  revokeRefreshTokenByUserId,
 } from '@modules/user/auth/user-auth.repository.js';
 import { ApiError } from '@utils/api-error.js';
 import { withTransaction } from '@utils/transaction.js';
@@ -68,4 +69,8 @@ export const verifyOtpAndAuthenticateUser = async (
 
   const accessToken = generateAccessToken(user.id, user.role);
   return { accessToken, rawRefreshToken, data: user };
+};
+
+export const logout = async (userId: string): Promise<void> => {
+  return await revokeRefreshTokenByUserId(pool, userId);
 };

@@ -31,4 +31,12 @@ export const USER_AUTH_CONFIG = {
       maxAge: this.REFRESH_MAX_AGE,
     };
   },
+
+  get CLEAR_COOKIE_OPTIONS(): CookieOptions {
+    return {
+      httpOnly: true,
+      secure: isProd,
+      sameSite: isProd ? 'none' : 'lax',
+    };
+  },
 };
