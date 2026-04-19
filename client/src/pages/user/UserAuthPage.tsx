@@ -288,8 +288,8 @@ export default function UserAuthPage({ onSuccess }: UserAuthProps) {
               Access LandChain
             </h1>
             <p className="text-[#746757] mb-10 text-lg">
-              Enter your registered email to receive a one-time code and view
-              your land parcels, titles, and on-chain verification status.
+              Enter your email to receive a one-time code and view your land
+              parcels, titles, and on-chain verification status.
             </p>
 
             <ErrorBox msg={serverError} />
