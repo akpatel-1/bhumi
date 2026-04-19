@@ -1,6 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import type { AuthRole, LoginPayload } from '@/types/admin/auth.types';
+import type {
+  AuthRole,
+  LoginPayload,
+  SessionUser,
+} from '@/types/admin/auth.types';
 
 import {
   ArrowRight,
@@ -19,6 +24,7 @@ interface FormData {
 
 type LoginPageProps = {
   role: AuthRole;
+  user?: SessionUser | null;
   onSubmit: (payload: LoginPayload) => Promise<void>;
 };
 
@@ -52,7 +58,12 @@ const ROLE_META: Record<
   },
 };
 
-export default function LoginPage({ role, onSubmit }: LoginPageProps) {
+export default function LoginPage({
+  role,
+  user = null,
+  onSubmit,
+}: LoginPageProps) {
+  const navigate = useNavigate();
   const roleMeta = ROLE_META[role];
   const [formData, setFormData] = useState<FormData>({
     email: '',
@@ -65,6 +76,12 @@ export default function LoginPage({ role, onSubmit }: LoginPageProps) {
   const [feedbackType, setFeedbackType] = useState<'success' | 'error' | null>(
     null
   );
+
+  useEffect(() => {
+    if (role === 'admin' && user?.role === 'admin') {
+      navigate('/admin/overview', { replace: true });
+    }
+  }, [navigate, role, user]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

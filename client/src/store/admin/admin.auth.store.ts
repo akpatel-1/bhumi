@@ -3,8 +3,10 @@ import type {
   AuthRole,
   LoginPayload,
   LoginResponse,
+  SessionUser,
 } from '@/types/admin/auth.types';
 
+import axios from 'axios';
 import { create } from 'zustand';
 
 type CacheEntry = {
@@ -16,12 +18,15 @@ type CacheEntry = {
 type AdminAuthState = {
   isLoading: boolean;
   error: string | null;
+  user: SessionUser | null;
   cache: Partial<Record<AuthRole, CacheEntry>>;
 };
 
 type AdminAuthActions = {
   clearError: () => void;
+  clearStore: () => void;
   clearRoleCache: (role: AuthRole) => void;
+  getMe: () => Promise<SessionUser | null>;
   getOrFetchLoginResponse: (
     role: AuthRole,
     payload: LoginPayload,
@@ -55,14 +60,44 @@ const getCachedResponse = (
 export const useAdminAuthStore = create<AdminAuthStore>((set, get) => ({
   isLoading: false,
   error: null,
+  user: null,
   cache: {},
 
   clearError: () => set({ error: null }),
+
+  clearStore: () =>
+    set({
+      isLoading: false,
+      error: null,
+      user: null,
+      cache: {},
+    }),
 
   clearRoleCache: (role: AuthRole) => {
     const nextCache = { ...get().cache };
     delete nextCache[role];
     set({ cache: nextCache });
+  },
+
+  getMe: async () => {
+    const existingUser = get().user;
+
+    if (existingUser) {
+      return existingUser;
+    }
+
+    try {
+      const user = await adminApi.getMe();
+      set({ user, error: null });
+      return user;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        get().clearStore();
+        return null;
+      }
+
+      throw error;
+    }
   },
 
   getOrFetchLoginResponse: async (
@@ -96,6 +131,10 @@ export const useAdminAuthStore = create<AdminAuthStore>((set, get) => ({
       set((state) => ({
         isLoading: false,
         error: null,
+        user: {
+          userId: response.data.id,
+          role: response.data.role,
+        },
         cache: {
           ...state.cache,
           [role]: {
@@ -125,8 +164,10 @@ export const adminAuthStore = {
   subscribe: useAdminAuthStore.subscribe,
   getSnapshot: useAdminAuthStore.getState,
   clearError: () => useAdminAuthStore.getState().clearError(),
+  clearStore: () => useAdminAuthStore.getState().clearStore(),
   clearRoleCache: (role: AuthRole) =>
     useAdminAuthStore.getState().clearRoleCache(role),
+  getMe: () => useAdminAuthStore.getState().getMe(),
   getOrFetchLoginResponse: (
     role: AuthRole,
     payload: LoginPayload,

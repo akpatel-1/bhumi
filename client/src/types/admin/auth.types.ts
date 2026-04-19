@@ -16,3 +16,17 @@ export interface LoginResponse {
   message: string;
   data: AuthUser;
 }
+
+export interface GetMeResponse {
+  success: boolean;
+  message: string;
+  data: {
+    id: string;
+    role: AuthRole;
+  };
+}
+
+export interface SessionUser {
+  userId: string;
+  role: AuthRole;
+}
