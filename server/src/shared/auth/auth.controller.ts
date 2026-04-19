@@ -3,6 +3,8 @@ import { authenticateUser, unauthenticateUser } from '@shared/auth/auth.services
 import { sendResponse } from '@utils/response-helper.js';
 import type { Request, Response } from 'express';
 
+import { authHandler } from '@/utils/auth-handler.js';
+
 export const loginUser = (role: 'admin' | 'registrar') => {
   return async (req: Request, res: Response) => {
     const { sessionId, data } = await authenticateUser(req.body, role);
@@ -27,3 +29,8 @@ export const logoutUser = (role: 'admin' | 'registrar') => {
     sendResponse(res, { message: 'Logged out successfully' });
   };
 };
+
+export const getMe = authHandler(async (req, res) => {
+  const data = req.user;
+  sendResponse(res, { message: 'Authenticated user', data });
+});
