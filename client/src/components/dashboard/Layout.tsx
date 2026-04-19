@@ -1,6 +1,10 @@
 import { type ReactNode, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import { adminAuthStore } from '@/store/admin/admin.auth.store';
+import { registrarAuthStore } from '@/store/registrar/registrar.auth.store';
+import { userAuthStore } from '@/store/user/user.auth.store';
+
 import Header from './Header';
 import Sidebar, { type NavTab } from './Sidebar';
 
@@ -57,6 +61,31 @@ export default function Layout({
 
   const isSidebarOpen = !isSidebarCollapsed;
 
+  const handleLogout = async () => {
+    try {
+      if (role === 'admin') {
+        await adminAuthStore.logout();
+      } else if (role === 'registrar') {
+        await registrarAuthStore.logout();
+      } else {
+        await userAuthStore.getState().logout();
+      }
+    } finally {
+      adminAuthStore.clearStore();
+      registrarAuthStore.clearStore();
+      userAuthStore.getState().clearUser();
+    }
+
+    const redirectTo =
+      role === 'admin'
+        ? '/admin/login'
+        : role === 'registrar'
+          ? '/registrar/login'
+          : '/user/auth';
+
+    navigate(redirectTo, { replace: true });
+  };
+
   return (
     <div className="relative flex h-screen overflow-hidden bg-white text-slate-900">
       <Sidebar
@@ -67,6 +96,7 @@ export default function Layout({
         userEmail={userEmail}
         onTabChange={navigate}
         collapsed={isSidebarCollapsed}
+        onLogout={handleLogout}
       />
 
       {isSidebarOpen && (

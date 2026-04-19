@@ -14,6 +14,7 @@ type UserAuthState = {
 
 type UserAuthActions = {
   clearUser: () => void;
+  logout: () => Promise<void>;
   requestOtp: (payload: UserEmailPayload) => Promise<void>;
   resendOtp: (payload: UserEmailPayload) => Promise<void>;
   verifyOtp: (payload: UserVerifyOtpPayload) => Promise<UserSessionUser>;
@@ -26,6 +27,16 @@ export const userAuthStore = create<UserAuthStore>((set, get) => ({
   user: null,
 
   clearUser: () => set({ user: null }),
+
+  logout: async () => {
+    try {
+      await userApi.logout();
+    } catch {
+      // ignore logout errors; we'll still clear client state
+    } finally {
+      get().clearUser();
+    }
+  },
 
   requestOtp: async (payload) => {
     await userApi.requestOtp({ email: payload.email.trim().toLowerCase() });

@@ -27,6 +27,7 @@ type RegistrarAuthActions = {
   clearStore: () => void;
   clearRoleCache: (role: AuthRole) => void;
   getMe: () => Promise<SessionUser | null>;
+  logout: () => Promise<void>;
   getOrFetchLoginResponse: (
     role: AuthRole,
     payload: LoginPayload,
@@ -100,6 +101,16 @@ export const useRegistrarAuthStore = create<RegistrarAuthStore>((set, get) => ({
     }
   },
 
+  logout: async () => {
+    try {
+      await registrarApi.logout();
+    } catch {
+      // ignore logout errors; we'll still clear client state
+    } finally {
+      get().clearStore();
+    }
+  },
+
   getOrFetchLoginResponse: async (
     role: AuthRole,
     payload: LoginPayload,
@@ -168,6 +179,7 @@ export const registrarAuthStore = {
   clearRoleCache: (role: AuthRole) =>
     useRegistrarAuthStore.getState().clearRoleCache(role),
   getMe: () => useRegistrarAuthStore.getState().getMe(),
+  logout: () => useRegistrarAuthStore.getState().logout(),
   getOrFetchLoginResponse: (
     role: AuthRole,
     payload: LoginPayload,

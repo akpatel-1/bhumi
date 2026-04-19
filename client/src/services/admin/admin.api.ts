@@ -5,11 +5,11 @@ import type {
   SessionUser,
 } from '@/types/admin/auth.types';
 
-import { adminClient } from './admin.client';
+import { axiosClient } from './client';
 
 export const adminApi = {
   login: async (data: LoginPayload) => {
-    const res = await adminClient.post<LoginResponse>(
+    const res = await axiosClient.post<LoginResponse>(
       '/admin/auth/login',
       data
     );
@@ -17,10 +17,14 @@ export const adminApi = {
   },
 
   getMe: async () => {
-    const res = await adminClient.get<GetMeResponse>('/admin/auth/me');
+    const res = await axiosClient.get<GetMeResponse>('/admin/auth/me');
     return {
       userId: res.data.data.id,
       role: res.data.data.role,
     } satisfies SessionUser;
+  },
+
+  logout: async () => {
+    await axiosClient.post('/admin/auth/logout');
   },
 };

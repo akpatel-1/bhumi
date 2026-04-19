@@ -34,4 +34,8 @@ export const userApi = {
       role: res.data.data.role,
     };
   },
+
+  logout: async () => {
+    await userClient.post('/user/auth/logout');
+  },
 };

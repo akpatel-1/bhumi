@@ -1,4 +1,4 @@
-import { Landmark, type LucideIcon } from 'lucide-react';
+import { Landmark, LogOut, type LucideIcon } from 'lucide-react';
 
 type Role = 'admin' | 'registrar' | 'user';
 
@@ -18,24 +18,15 @@ interface SidebarProps {
   userEmail: string;
   onTabChange: (path: string) => void;
   collapsed?: boolean;
-}
-
-function getInitials(name: string) {
-  return name
-    .split(' ')
-    .map((n) => n[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 2);
+  onLogout?: () => void;
 }
 
 export default function Sidebar({
   tabs,
   activeTab,
-  role,
-  userName,
   onTabChange,
   collapsed = false,
+  onLogout,
 }: SidebarProps) {
   const isOpen = !collapsed;
 
@@ -120,24 +111,22 @@ export default function Sidebar({
         </ul>
       </div>
 
-      <div className="border-t border-slate-200/80 bg-slate-50/60 p-4">
-        <button
-          className={`group flex min-h-11 w-full items-center rounded-xl text-slate-700 transition-all duration-200 hover:bg-slate-100 ${
-            isOpen ? 'px-4' : 'justify-center px-0'
-          }`}
-        >
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 text-slate-700">
-            <span className="text-xs font-semibold">
-              {getInitials(userName)}
-            </span>
-          </div>
-          {isOpen && (
-            <div className="ml-3 min-w-0 text-left">
-              <div className="truncate text-sm font-semibold">{userName}</div>
-              <div className="text-xs text-slate-500">{role}</div>
-            </div>
-          )}
-        </button>
+      <div className="border-t border-slate-200/80 bg-slate-50/60 p-4 space-y-2">
+        {onLogout && (
+          <button
+            type="button"
+            onClick={onLogout}
+            aria-label="Logout"
+            className={`group flex min-h-11 w-full items-center rounded-xl text-rose-600 transition-all duration-200 hover:bg-rose-50 hover:text-rose-700 ${
+              isOpen ? 'px-4' : 'justify-center px-0'
+            }`}
+          >
+            <LogOut className="h-5 w-5 shrink-0" strokeWidth={2} />
+            {isOpen && (
+              <span className="ml-3 text-sm font-semibold">Sign Out</span>
+            )}
+          </button>
+        )}
       </div>
     </nav>
   );

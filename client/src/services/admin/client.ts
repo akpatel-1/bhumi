@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const adminClient = axios.create({
+export const axiosClient = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_URL,
   withCredentials: true,
 });

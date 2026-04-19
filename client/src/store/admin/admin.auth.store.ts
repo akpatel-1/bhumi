@@ -27,6 +27,7 @@ type AdminAuthActions = {
   clearStore: () => void;
   clearRoleCache: (role: AuthRole) => void;
   getMe: () => Promise<SessionUser | null>;
+  logout: () => Promise<void>;
   getOrFetchLoginResponse: (
     role: AuthRole,
     payload: LoginPayload,
@@ -100,6 +101,16 @@ export const useAdminAuthStore = create<AdminAuthStore>((set, get) => ({
     }
   },
 
+  logout: async () => {
+    try {
+      await adminApi.logout();
+    } catch {
+      // ignore logout errors; we'll still clear client state
+    } finally {
+      get().clearStore();
+    }
+  },
+
   getOrFetchLoginResponse: async (
     role: AuthRole,
     payload: LoginPayload,
@@ -168,6 +179,7 @@ export const adminAuthStore = {
   clearRoleCache: (role: AuthRole) =>
     useAdminAuthStore.getState().clearRoleCache(role),
   getMe: () => useAdminAuthStore.getState().getMe(),
+  logout: () => useAdminAuthStore.getState().logout(),
   getOrFetchLoginResponse: (
     role: AuthRole,
     payload: LoginPayload,
