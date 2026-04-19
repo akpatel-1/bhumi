@@ -16,7 +16,7 @@ const requireUserAuthLoader = async () => {
 
 export const userRoutes = [
   {
-    path: '/auth',
+    path: '/',
     element: <UserAuthPage />,
   },
   {
