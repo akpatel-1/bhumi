@@ -1,5 +1,6 @@
 import { validateSchema } from '@modules/schema-validator.js';
 import {
+  getUser,
   logoutUser,
   requestUserOtp,
   rotateUserSession,
@@ -19,3 +20,5 @@ userAuthRoutes.post('/auth/verify-otp', validateSchema(userAuthSchema), verifyUs
 userAuthRoutes.post('/auth/logout', validateUserSession, logoutUser);
 
 userAuthRoutes.post('/auth/refresh', rotateUserSession);
+
+userAuthRoutes.get('/auth/me', validateUserSession, getUser);

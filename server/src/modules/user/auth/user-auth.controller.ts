@@ -61,3 +61,8 @@ export const rotateUserSession = async (req: Request, res: Response) => {
 
   sendResponse(res, { statusCode: 200, message: 'Login successful', data });
 };
+
+export const getUser = authHandler(async (req, res) => {
+  const data = req.user;
+  sendResponse(res, { message: 'Authenticated user', data });
+});
