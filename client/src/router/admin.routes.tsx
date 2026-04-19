@@ -1,6 +1,8 @@
-import { redirect } from 'react-router-dom';
+import { Navigate, redirect } from 'react-router-dom';
 
 import { adminAuthLoader } from '@/loader/admin.auth.loader';
+import AdminCreateRegistrarPage from '@/pages/admin/AdminCreateRegistrarPage';
+import AdminDashboard from '@/pages/admin/AdminDashboard';
 import AdminLoginPage from '@/pages/admin/AdminLoginPage';
 import AdminOverviewPage from '@/pages/admin/AdminOverviewPage';
 
@@ -20,8 +22,22 @@ export const adminRoutes = [
     element: <AdminLoginPage />,
   },
   {
-    path: '/admin/overview',
+    path: '/admin',
     loader: requireAdminAuthLoader,
-    element: <AdminOverviewPage />,
+    element: <AdminDashboard />,
+    children: [
+      {
+        index: true,
+        element: <Navigate to="/admin/overview" replace />,
+      },
+      {
+        path: 'overview',
+        element: <AdminOverviewPage />,
+      },
+      {
+        path: 'registrars/create',
+        element: <AdminCreateRegistrarPage />,
+      },
+    ],
   },
 ];

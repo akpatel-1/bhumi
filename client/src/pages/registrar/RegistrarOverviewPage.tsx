@@ -1,7 +1,8 @@
 export default function RegistrarOverviewPage() {
   return (
-    <main className="p-6">
-      <h1 className="text-2xl font-semibold">Registrar Overview</h1>
-    </main>
+    <div className="space-y-2">
+      <h1 className="text-2xl font-semibold text-slate-900">Admin Overview</h1>
+      <p className="text-slate-600">Manage users.</p>
+    </div>
   );
 }

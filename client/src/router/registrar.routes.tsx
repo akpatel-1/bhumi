@@ -1,8 +1,10 @@
-import { redirect } from 'react-router-dom';
+import { Navigate, redirect } from 'react-router-dom';
 
 import { registrarAuthLoader } from '@/loader/registrar.auth.loader';
+import RegistrarDashboard from '@/pages/registrar/RegistrarDashboard';
+import RegistrarLandKycPage from '@/pages/registrar/RegistrarLandVerificationPage';
 import RegistrarLoginPage from '@/pages/registrar/RegistrarLoginPage';
-import RegistrarOverviewPage from '@/pages/registrar/RegistrarOverviewPage';
+import RegistrarUserKycPage from '@/pages/registrar/RegistrarUserKycPage';
 
 const requireRegistrarAuthLoader = async () => {
   const user = await registrarAuthLoader();
@@ -20,8 +22,26 @@ export const registrarRoutes = [
     element: <RegistrarLoginPage />,
   },
   {
-    path: '/registrar/overview',
+    path: '/registrar',
     loader: requireRegistrarAuthLoader,
-    element: <RegistrarOverviewPage />,
+    element: <RegistrarDashboard />,
+    children: [
+      {
+        index: true,
+        element: <Navigate to="/registrar/user-kyc" replace />,
+      },
+      {
+        path: 'overview',
+        element: <Navigate to="/registrar/user-kyc" replace />,
+      },
+      {
+        path: 'user-kyc',
+        element: <RegistrarUserKycPage />,
+      },
+      {
+        path: 'land-kyc',
+        element: <RegistrarLandKycPage />,
+      },
+    ],
   },
 ];

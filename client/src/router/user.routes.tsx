@@ -1,8 +1,11 @@
-import { redirect } from 'react-router-dom';
+import { Navigate, redirect } from 'react-router-dom';
 
 import { userAuthLoader } from '@/loader/user.auth.loader';
 import UserAuthPage from '@/pages/user/UserAuthPage';
-import UserOverviewPage from '@/pages/user/UserOverviewPage';
+import UserDashboard from '@/pages/user/UserDashboard';
+import UserKycPage from '@/pages/user/UserKycPage';
+import UserLandRegistrationPage from '@/pages/user/UserLandRegistrationPage';
+import UserLandSearchPage from '@/pages/user/UserLandSearchPage';
 
 const requireUserAuthLoader = async () => {
   const user = await userAuthLoader();
@@ -20,8 +23,34 @@ export const userRoutes = [
     element: <UserAuthPage />,
   },
   {
-    path: '/user/overview',
+    path: '/user/auth',
+    element: <UserAuthPage />,
+  },
+  {
+    path: '/user',
     loader: requireUserAuthLoader,
-    element: <UserOverviewPage />,
+    element: <UserDashboard />,
+    children: [
+      {
+        index: true,
+        element: <Navigate to="/user/kyc" replace />,
+      },
+      {
+        path: 'overview',
+        element: <Navigate to="/user/kyc" replace />,
+      },
+      {
+        path: 'kyc',
+        element: <UserKycPage />,
+      },
+      {
+        path: 'land-registration',
+        element: <UserLandRegistrationPage />,
+      },
+      {
+        path: 'search-land',
+        element: <UserLandSearchPage />,
+      },
+    ],
   },
 ];
