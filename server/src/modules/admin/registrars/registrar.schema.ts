@@ -1,7 +1,15 @@
 import { z } from 'zod';
 
 export const registrarSchema = z.object({
-  email: z.string().trim().min(1, 'Email is required').toLowerCase().email('Invalid email format'),
+  email: z
+    .string()
+    .trim()
+    .min(1, 'Email is required')
+    .toLowerCase()
+    .email('Invalid email format')
+    .refine((val) => val.endsWith('@gov.in'), {
+      message: 'Only @gov.in emails are allowed',
+    }),
 
   password: z
     .string()
@@ -11,4 +19,6 @@ export const registrarSchema = z.object({
     }),
 
   district: z.string().trim().min(2, 'District is required'),
+
+  state: z.string().trim().min(2, 'State is required'),
 });

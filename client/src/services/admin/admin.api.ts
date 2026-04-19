@@ -1,4 +1,8 @@
 import type {
+  CreateRegistrarPayload,
+  CreateRegistrarResponse,
+} from '@/types/admin/admin.registrar.create.types';
+import type {
   GetMeResponse,
   LoginPayload,
   LoginResponse,
@@ -12,6 +16,14 @@ export const adminApi = {
     const res = await axiosClient.post<LoginResponse>(
       '/admin/auth/login',
       data
+    );
+    return res.data;
+  },
+
+  createRegistrar: async (payload: CreateRegistrarPayload) => {
+    const res = await axiosClient.post<CreateRegistrarResponse>(
+      '/admin/registrars/',
+      payload
     );
     return res.data;
   },
