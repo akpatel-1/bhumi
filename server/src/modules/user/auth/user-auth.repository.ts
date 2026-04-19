@@ -49,8 +49,8 @@ export const revokeRefreshTokenByUserId = async (pool: Pool, userId: string, tok
     `UPDATE refresh_tokens
     SET revoked_at = NOW()
     WHERE user_id = $1
-    AND token_hash = tokenHash`,
-    [userId],
+    AND token_hash = $2`,
+    [userId, tokenHash],
   );
 };
 
