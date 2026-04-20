@@ -64,3 +64,9 @@ export const insertIntoRegistrarProfile = async (
   );
   return result.rows[0];
 };
+
+export const fetchAllRegistrars = async (pool: Pool, adminId: string) => {
+  const result = await pool.query(`
+    SELECT district, created_at FROM registrar_profiles`);
+  return result.rows;
+};

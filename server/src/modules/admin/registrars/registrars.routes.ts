@@ -4,7 +4,7 @@ import { validateSchema } from '@/modules/schema-validator.js';
 import { validateSession } from '@/shared/session/session-validation.middleware.js';
 
 import { registrarSchema } from './registrar.schema.js';
-import { createRegistrar } from './registrars.controller.js';
+import { createRegistrar, getAllRegistrar } from './registrars.controller.js';
 
 export const adminRegistrarRoutes = express.Router();
 
@@ -14,3 +14,5 @@ adminRegistrarRoutes.post(
   validateSchema(registrarSchema),
   createRegistrar,
 );
+
+adminRegistrarRoutes.get('/registrars/', validateSession('admin'), getAllRegistrar);

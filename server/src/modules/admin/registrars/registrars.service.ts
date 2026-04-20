@@ -6,6 +6,7 @@ import { ApiError } from '@/utils/api-error.js';
 import { withTransaction } from '@/utils/transaction.js';
 
 import {
+  fetchAllRegistrars,
   findRegistrarByEmail,
   insertIntoRegistrarProfile,
   insertIntoUsers,
@@ -52,4 +53,8 @@ export const registerRegistrar = async (
       createdAt: profile.created_at,
     };
   });
+};
+
+export const getRegistrar = async (adminId: string) => {
+  return await fetchAllRegistrars(pool, adminId);
 };
