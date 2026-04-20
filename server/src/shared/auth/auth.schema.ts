@@ -5,7 +5,7 @@ export const authSchema = z.object({
 
   password: z
     .string()
-    .min(12, 'Password must be at least 12 characters')
+    .min(8, 'Password must be at least 8 characters')
     .refine((val) => val.trim().length > 0, {
       message: 'Password cannot be only spaces',
     }),
