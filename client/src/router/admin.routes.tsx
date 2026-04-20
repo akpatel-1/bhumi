@@ -3,6 +3,7 @@ import { Navigate, redirect } from 'react-router-dom';
 import { adminAuthLoader } from '@/loader/admin.auth.loader';
 import AdminCreateRegistrarPage from '@/pages/admin/AdminCreateRegistrarPage';
 import AdminDashboard from '@/pages/admin/AdminDashboard';
+import AdminActiveRegistrarPage from '@/pages/admin/AdminActiveRegistrarPage';
 import AdminLoginPage from '@/pages/admin/AdminLoginPage';
 import AdminOverviewPage from '@/pages/admin/AdminOverviewPage';
 
@@ -37,6 +38,10 @@ export const adminRoutes = [
       {
         path: 'registrars/create',
         element: <AdminCreateRegistrarPage />,
+      },
+      {
+        path: 'registrars',
+        element: <AdminActiveRegistrarPage />,
       },
     ],
   },

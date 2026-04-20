@@ -4,7 +4,7 @@ import Layout from '@/components/dashboard/Layout';
 import type { NavTab } from '@/components/dashboard/Sidebar';
 import { useAdminAuthStore } from '@/store/admin/admin.auth.store';
 
-import { LayoutDashboard, UserPlus } from 'lucide-react';
+import { LayoutDashboard, UserPlus, Users } from 'lucide-react';
 
 const getNameFromEmail = (email: string) => {
   const local = email.split('@')[0] ?? '';
@@ -29,6 +29,11 @@ const tabs: NavTab[] = [
     label: 'Create Registrar',
     icon: UserPlus,
     path: '/admin/registrars/create',
+  },
+  {
+    label: 'Active Registrar',
+    icon: Users,
+    path: '/admin/registrars',
   },
 ];
 

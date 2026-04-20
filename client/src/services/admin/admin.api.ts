@@ -3,6 +3,7 @@ import type {
   CreateRegistrarResponse,
 } from '@/types/admin/admin.registrar.create.types';
 import type {
+  GetAllRegistrarResponse,
   GetMeResponse,
   LoginPayload,
   LoginResponse,
@@ -34,6 +35,12 @@ export const adminApi = {
       userId: res.data.data.id,
       role: res.data.data.role,
     } satisfies SessionUser;
+  },
+
+  getAllRegistrar: async () => {
+    const res =
+      await axiosClient.get<GetAllRegistrarResponse>('/admin/registrars/');
+    return res.data;
   },
 
   logout: async () => {

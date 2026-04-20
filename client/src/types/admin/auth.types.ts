@@ -30,3 +30,14 @@ export interface SessionUser {
   userId: string;
   role: AuthRole;
 }
+
+export interface AdminRegistrarListItem {
+  district: string;
+  created_at: string;
+}
+
+export interface GetAllRegistrarResponse {
+  success: boolean;
+  message: string;
+  data: AdminRegistrarListItem[];
+}
