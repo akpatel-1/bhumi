@@ -7,6 +7,7 @@ export type RegistrarUserKycItem = {
   address: string;
   pincode: string;
   district: string;
+  state: string;
   pan_number?: string;
   pan_document_url: string;
   rejection_reason?: string | null;

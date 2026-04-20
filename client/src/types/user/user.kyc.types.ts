@@ -4,6 +4,7 @@ export type UserKycPayload = {
   address: string;
   pincode: string;
   district: string;
+  state: string;
   pan_number: string;
 };
 
