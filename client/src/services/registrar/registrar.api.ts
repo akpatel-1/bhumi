@@ -4,6 +4,10 @@ import type {
   LoginResponse,
   SessionUser,
 } from '@/types/admin/auth.types';
+import type {
+  RegistrarGetUserKycResponse,
+  RegistrarKycStatus,
+} from '@/types/registrar/registrar.kyc.types';
 
 import { axiosClient } from '../admin/client';
 
@@ -26,5 +30,15 @@ export const registrarApi = {
 
   logout: async () => {
     await axiosClient.post('/registrar/auth/logout');
+  },
+
+  getUserKycs: async (status: RegistrarKycStatus) => {
+    const res = await axiosClient.get<RegistrarGetUserKycResponse>(
+      '/registrar/kyc/users',
+      {
+        params: { status },
+      }
+    );
+    return res.data;
   },
 };
