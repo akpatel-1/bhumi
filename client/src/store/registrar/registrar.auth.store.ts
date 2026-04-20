@@ -1,4 +1,5 @@
 import { registrarApi } from '@/services/registrar/registrar.api';
+import { useRegistrarKycStore } from '@/store/registrar/registrar.kyc.store';
 import type {
   AuthRole,
   LoginPayload,
@@ -108,6 +109,7 @@ export const useRegistrarAuthStore = create<RegistrarAuthStore>((set, get) => ({
       // ignore logout errors; we'll still clear client state
     } finally {
       get().clearStore();
+      useRegistrarKycStore.getState().clear();
     }
   },
 
