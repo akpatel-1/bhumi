@@ -4,7 +4,14 @@ import { useSearchParams } from 'react-router-dom';
 import { useRegistrarKycStore } from '@/store/registrar/registrar.kyc.store';
 import type { RegistrarKycStatus } from '@/types/registrar/registrar.kyc.types';
 
-import { ChevronDown, FileText, RefreshCcw } from 'lucide-react';
+import { Check, ChevronDown, FileText, RefreshCcw } from 'lucide-react';
+
+const REJECTION_OPTIONS = [
+  'PAN details do not match records',
+  'Uploaded document is unclear',
+  'Document appears invalid or tampered',
+  'Required KYC details are incomplete',
+] as const;
 
 function isKycStatus(value: string | null): value is RegistrarKycStatus {
   return value === 'pending' || value === 'approved' || value === 'rejected';
@@ -82,6 +89,7 @@ export default function RegistrarUserKycPage() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [approvingId, setApprovingId] = useState<string | null>(null);
   const [rejectingId, setRejectingId] = useState<string | null>(null);
+  const [selectedRejectReason, setSelectedRejectReason] = useState('');
   const [rejectReason, setRejectReason] = useState('');
 
   const rows = useMemo(() => cache.data ?? [], [cache.data]);
@@ -105,23 +113,33 @@ export default function RegistrarUserKycPage() {
 
   const openReject = (userId: string) => {
     setRejectingId(userId);
+    setSelectedRejectReason('');
     setRejectReason('');
   };
 
   const closeReject = () => {
     setRejectingId(null);
+    setSelectedRejectReason('');
     setRejectReason('');
   };
 
   const onConfirmReject = async () => {
     if (!rejectingId) return;
+
+    const finalReason =
+      selectedRejectReason === 'other' ? rejectReason : selectedRejectReason;
+
     try {
-      await reject(rejectingId, rejectReason);
+      await reject(rejectingId, finalReason);
       closeReject();
     } catch {
       // store already sets error
     }
   };
+
+  const canSubmitReject =
+    selectedRejectReason !== '' &&
+    (selectedRejectReason !== 'other' || rejectReason.trim().length > 0);
 
   return (
     <div className="space-y-6">
@@ -361,13 +379,43 @@ export default function RegistrarUserKycPage() {
               <label className="text-xs font-semibold uppercase tracking-wide text-slate-500">
                 Rejection reason
               </label>
-              <textarea
-                value={rejectReason}
-                onChange={(e) => setRejectReason(e.target.value)}
-                rows={4}
-                placeholder="e.g. Document not clear"
-                className="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500"
-              />
+
+              <div className="flex items-end gap-2">
+                <select
+                  value={selectedRejectReason}
+                  onChange={(e) => setSelectedRejectReason(e.target.value)}
+                  className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500"
+                >
+                  <option value="">Select a reason</option>
+                  {REJECTION_OPTIONS.map((reason) => (
+                    <option key={reason} value={reason}>
+                      {reason}
+                    </option>
+                  ))}
+                  <option value="other">Other</option>
+                </select>
+
+                <button
+                  type="button"
+                  onClick={() => void onConfirmReject()}
+                  disabled={!canSubmitReject}
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-red-600 text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+                  aria-label="Submit rejection"
+                  title="Submit rejection"
+                >
+                  <Check className="h-4 w-4" />
+                </button>
+              </div>
+
+              {selectedRejectReason === 'other' && (
+                <textarea
+                  value={rejectReason}
+                  onChange={(e) => setRejectReason(e.target.value)}
+                  rows={3}
+                  placeholder="Write rejection reason"
+                  className="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500"
+                />
+              )}
             </div>
 
             <div className="flex items-center justify-end gap-2 px-6 py-4 border-t border-slate-200">
@@ -377,13 +425,6 @@ export default function RegistrarUserKycPage() {
                 className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
               >
                 Cancel
-              </button>
-              <button
-                type="button"
-                onClick={() => void onConfirmReject()}
-                className="inline-flex items-center justify-center rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-700"
-              >
-                Confirm reject
               </button>
             </div>
           </div>
