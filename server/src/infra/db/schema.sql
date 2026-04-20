@@ -82,3 +82,31 @@ create table if not exists registrar_profiles (
   unique (user_id),
 );
 
+CREATE TABLE land_records (
+  id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  plot_no      VARCHAR(50)    NOT NULL,
+  district     VARCHAR(100)   NOT NULL,
+  tehsil       VARCHAR(100)   NOT NULL,
+  village      VARCHAR(100)   NOT NULL,
+  area_sqm     DECIMAL(12, 4) NOT NULL,
+  land_type    VARCHAR(50)    NOT NULL DEFAULT 'agricultural'
+               CHECK (land_type IN ('agricultural', 'residential', 'commercial', 'government')),
+  image_r2_key TEXT,
+  created_at   TIMESTAMPTZ    NOT NULL DEFAULT now(),
+
+  UNIQUE (plot_no, village, tehsil, district)  
+);
+
+CREATE TABLE land_transactions (
+  id                 UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  land_id            UUID        NOT NULL REFERENCES land_records(id),
+  from_user_id       UUID        NOT NULL REFERENCES users(id),  
+  to_user_id         UUID        NOT NULL REFERENCES users(id),
+  approved_by        UUID        REFERENCES users(id),           
+  transaction_type   VARCHAR(20) NOT NULL
+                     CHECK (transaction_type IN ('privatization', 'transfer', 'correction')),
+  status             VARCHAR(20) NOT NULL DEFAULT 'pending'
+                     CHECK (status IN ('pending', 'approved', 'rejected')),
+  blockchain_tx_hash TEXT,
+  created_at         TIMESTAMPTZ NOT NULL DEFAULT now()
+);
