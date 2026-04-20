@@ -27,6 +27,8 @@ type RegistrarKycActions = {
       force?: boolean;
     }
   ) => Promise<RegistrarUserKycItem[]>;
+  approve: (userId: string) => Promise<void>;
+  reject: (userId: string, reason: string) => Promise<void>;
 };
 
 type RegistrarKycStore = RegistrarKycState & RegistrarKycActions;
@@ -116,6 +118,109 @@ export const useRegistrarKycStore = create<RegistrarKycStore>((set, get) => ({
       return get().byStatus[status].data;
     }
   },
+
+  approve: async (userId) => {
+    try {
+      await registrarApi.approveUserKyc(userId);
+
+      set((state) => {
+        const nextPending = state.byStatus.pending.data.filter(
+          (item) => item.user_id !== userId
+        );
+
+        return {
+          byStatus: {
+            ...state.byStatus,
+            pending: {
+              ...state.byStatus.pending,
+              data: nextPending,
+            },
+            approved: {
+              ...state.byStatus.approved,
+              hasFetched: false,
+            },
+          },
+        };
+      });
+    } catch (error) {
+      const message = axios.isAxiosError(error)
+        ? (error.response?.data?.message ?? 'Unable to approve KYC.')
+        : error instanceof Error
+          ? error.message
+          : 'Unable to approve KYC.';
+
+      set((state) => ({
+        byStatus: {
+          ...state.byStatus,
+          pending: {
+            ...state.byStatus.pending,
+            error: message,
+          },
+        },
+      }));
+
+      throw error;
+    }
+  },
+
+  reject: async (userId, reason) => {
+    const trimmed = reason.trim();
+    if (!trimmed) {
+      const error = new Error('Rejection reason is required.');
+      set((state) => ({
+        byStatus: {
+          ...state.byStatus,
+          pending: {
+            ...state.byStatus.pending,
+            error: error.message,
+          },
+        },
+      }));
+      throw error;
+    }
+
+    try {
+      await registrarApi.rejectUserKyc(userId, trimmed);
+
+      set((state) => {
+        const nextPending = state.byStatus.pending.data.filter(
+          (item) => item.user_id !== userId
+        );
+
+        return {
+          byStatus: {
+            ...state.byStatus,
+            pending: {
+              ...state.byStatus.pending,
+              data: nextPending,
+            },
+            rejected: {
+              ...state.byStatus.rejected,
+              hasFetched: false,
+            },
+          },
+        };
+      });
+    } catch (error) {
+      const message = axios.isAxiosError(error)
+        ? (error.response?.data?.message ?? 'Unable to reject KYC.')
+        : error instanceof Error
+          ? error.message
+          : 'Unable to reject KYC.';
+
+      set((state) => ({
+        byStatus: {
+          ...state.byStatus,
+          pending: {
+            ...state.byStatus.pending,
+            error: message,
+          },
+        },
+      }));
+
+      throw error;
+    }
+  },
 }));
 
 export const registrarKycStore = {
@@ -126,4 +231,7 @@ export const registrarKycStore = {
     useRegistrarKycStore.getState().clearStatus(status),
   fetchUsers: (status: RegistrarKycStatus, options?: { force?: boolean }) =>
     useRegistrarKycStore.getState().fetchUsers(status, options),
+  approve: (userId: string) => useRegistrarKycStore.getState().approve(userId),
+  reject: (userId: string, reason: string) =>
+    useRegistrarKycStore.getState().reject(userId, reason),
 };

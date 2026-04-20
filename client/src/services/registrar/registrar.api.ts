@@ -41,4 +41,14 @@ export const registrarApi = {
     );
     return res.data;
   },
+
+  approveUserKyc: async (userId: string) => {
+    await axiosClient.patch(`/registrar/kyc/users/${userId}/approve`);
+  },
+
+  rejectUserKyc: async (userId: string, rejectionReason: string) => {
+    await axiosClient.patch(`/registrar/kyc/users/${userId}/reject`, {
+      rejection_reason: rejectionReason,
+    });
+  },
 };
