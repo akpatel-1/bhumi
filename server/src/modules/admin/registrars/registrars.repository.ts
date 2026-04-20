@@ -8,12 +8,16 @@ interface User {
 export const findRegistrarByEmail = async (pool: Pool, email: string): Promise<User | null> => {
   const result = await pool.query(
     `
-    SELECT id 
-    FROM users 
-    WHERE email = $1
-    AND role = $2 `,
+    SELECT rp.user_id 
+    FROM registrar_profiles rp
+    JOIN users u ON u.id = rp.user_id 
+    WHERE u.email = $1
+    AND u.role = $2
+    LIMIT 1
+    `,
     [email, 'registrar'],
   );
+
   return result.rows[0] || null;
 };
 
