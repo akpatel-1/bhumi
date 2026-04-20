@@ -35,6 +35,13 @@ export default function Header({
   onNotificationClick,
 }: HeaderProps) {
   const sidebarOpen = !sidebarCollapsed;
+  const roleTag = role.toUpperCase();
+  const roleTagClass =
+    role === 'admin'
+      ? 'border-violet-200 bg-violet-50 text-violet-700'
+      : role === 'registrar'
+        ? 'border-emerald-200 bg-emerald-50 text-emerald-700'
+        : 'border-blue-200 bg-blue-50 text-blue-700';
 
   return (
     <header className="sticky top-0 z-20 flex h-14 w-full items-center gap-2 border-b border-slate-200 bg-white px-4">
@@ -103,10 +110,11 @@ export default function Header({
             </span>
           </div>
           <div className="hidden text-left lg:block">
-            <p className="text-sm font-semibold leading-none text-slate-900">
-              {userName}
-            </p>
-            <p className="mt-0.5 text-xs text-slate-500">{role}</p>
+            <span
+              className={`inline-flex rounded-full border px-2 py-0.5 text-[10px] font-semibold tracking-wide ${roleTagClass}`}
+            >
+              {roleTag}
+            </span>
           </div>
           <ChevronDown className="hidden h-4 w-4 text-slate-400 lg:block" />
         </button>
