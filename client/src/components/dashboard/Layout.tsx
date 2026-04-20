@@ -90,7 +90,8 @@ export default function Layout({
     <div className="relative flex h-screen overflow-hidden bg-white text-slate-900">
       <Sidebar
         tabs={tabs}
-        activeTab={location.pathname}
+        activePathname={location.pathname}
+        activeSearch={location.search}
         role={role}
         userName={userName}
         userEmail={userEmail}

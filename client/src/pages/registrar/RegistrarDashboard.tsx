@@ -23,7 +23,12 @@ const tabs: NavTab[] = [
   {
     label: 'User KYC',
     icon: UserCheck,
-    path: '/registrar/user-kyc',
+    path: '/registrar/user-kyc?status=pending',
+    children: [
+      { label: 'Pending', path: '/registrar/user-kyc?status=pending' },
+      { label: 'Approved', path: '/registrar/user-kyc?status=approved' },
+      { label: 'Rejected', path: '/registrar/user-kyc?status=rejected' },
+    ],
   },
   {
     label: 'Land Verification',
