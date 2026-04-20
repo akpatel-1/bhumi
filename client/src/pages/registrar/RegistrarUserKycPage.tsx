@@ -150,7 +150,15 @@ export default function RegistrarUserKycPage() {
       )}
 
       <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
-        <div className="border-b border-slate-200 px-6 py-4">
+        <div
+          className={`border-b px-6 py-4 ${
+            status === 'rejected'
+              ? 'border-red-200 bg-red-50'
+              : status === 'approved'
+                ? 'border-emerald-200 bg-emerald-50'
+                : 'border-amber-200 bg-amber-50'
+          }`}
+        >
           <div className="flex items-center justify-between gap-3">
             <div className="space-y-0.5">
               <p className="text-sm font-semibold text-slate-900">
