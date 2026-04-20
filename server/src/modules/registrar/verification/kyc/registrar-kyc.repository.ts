@@ -10,6 +10,7 @@ interface UserKyc {
   state: string;
   pan_number: string;
   pan_document_key: string;
+  rejection_reason: string | null;
 }
 
 export const fetchUsersKyc = async (
@@ -26,7 +27,8 @@ export const fetchUsersKyc = async (
             uk.district,
             uk.state,
             uk.pan_number,
-            uk.pan_document_key
+          uk.pan_document_key,
+          uk.rejection_reason
      FROM user_kyc uk
      JOIN registrar_profiles rp 
        ON rp.district = uk.district 

@@ -11,14 +11,16 @@ import {
   markKycAsRejected,
 } from './registrar-kyc.repository.js';
 
-export const getKyc = async (userId: string, status: string) => {
+export type KycStatus = 'pending' | 'approved' | 'rejected';
+
+export const getKyc = async (userId: string, status: KycStatus) => {
   const kycs = await fetchUsersKyc(pool, userId, status);
 
   return Promise.all(
     kycs.map(async (kyc) => {
       const panDocumentUrl = await getPresignedUrl(kyc.pan_document_key);
 
-      return {
+      const baseKyc = {
         user_id: kyc.user_id,
         pan_name: kyc.pan_name,
         phone: kyc.phone,
@@ -28,6 +30,15 @@ export const getKyc = async (userId: string, status: string) => {
         state: kyc.state,
         pan_document_url: panDocumentUrl,
       };
+
+      if (status === 'rejected') {
+        return {
+          ...baseKyc,
+          rejection_reason: kyc.rejection_reason,
+        };
+      }
+
+      return baseKyc;
     }),
   );
 };

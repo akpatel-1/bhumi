@@ -1,10 +1,10 @@
 import { authHandler } from '@/utils/auth-handler.js';
 import { sendResponse } from '@/utils/response-helper.js';
 
-import { approveKyc, getKyc, rejectKyc } from './registrar-kyc.service.js';
+import { type KycStatus, approveKyc, getKyc, rejectKyc } from './registrar-kyc.service.js';
 
 export const getUserKyc = authHandler(async (req, res) => {
-  const status = req.query.status as string;
+  const status = req.query.status as KycStatus;
   const data = await getKyc(req.user.id, status);
   sendResponse(res, { data });
 });

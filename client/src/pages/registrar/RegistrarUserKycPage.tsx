@@ -141,6 +141,8 @@ export default function RegistrarUserKycPage() {
     selectedRejectReason !== '' &&
     (selectedRejectReason !== 'other' || rejectReason.trim().length > 0);
 
+  const tableColSpan = status === 'pending' || status === 'rejected' ? 9 : 8;
+
   return (
     <div className="space-y-6">
       {cache.error && (
@@ -199,6 +201,9 @@ export default function RegistrarUserKycPage() {
                 <th className="px-6 py-3">District</th>
                 <th className="px-6 py-3">State</th>
                 <th className="px-6 py-3">Document</th>
+                {status === 'rejected' && (
+                  <th className="px-6 py-3">Rejection Reason</th>
+                )}
                 {status === 'pending' && (
                   <th className="px-6 py-3 text-right">Actions</th>
                 )}
@@ -209,7 +214,7 @@ export default function RegistrarUserKycPage() {
               {rows.length === 0 && !cache.isLoading ? (
                 <tr>
                   <td
-                    colSpan={status === 'pending' ? 9 : 8}
+                    colSpan={tableColSpan}
                     className="px-6 py-10 text-center text-slate-500"
                   >
                     No {status} requests.
@@ -272,6 +277,17 @@ export default function RegistrarUserKycPage() {
                         )}
                       </td>
 
+                      {status === 'rejected' && (
+                        <td className="px-6 py-4 text-slate-700">
+                          <span
+                            className="block max-w-xs truncate"
+                            title={row.rejection_reason || '-'}
+                          >
+                            {row.rejection_reason || '-'}
+                          </span>
+                        </td>
+                      )}
+
                       {status === 'pending' && (
                         <td className="px-6 py-4">
                           <div className="flex items-center justify-end gap-2">
@@ -305,7 +321,7 @@ export default function RegistrarUserKycPage() {
 
                     {expandedId === row.user_id && (
                       <tr>
-                        <td colSpan={status === 'pending' ? 9 : 8}>
+                        <td colSpan={tableColSpan}>
                           <div className="px-6 py-6 bg-slate-50/50">
                             <div className="space-y-6">
                               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
