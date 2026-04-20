@@ -1,4 +1,5 @@
 import { userApi } from '@/services/user/user.api';
+import { useUserKycStore } from '@/store/user/user.kyc.store';
 import type {
   UserEmailPayload,
   UserSessionUser,
@@ -35,6 +36,7 @@ export const userAuthStore = create<UserAuthStore>((set, get) => ({
       // ignore logout errors; we'll still clear client state
     } finally {
       get().clearUser();
+      useUserKycStore.getState().clear();
     }
   },
 
