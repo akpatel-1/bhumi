@@ -41,15 +41,17 @@ function DocumentCard({ url }: { url: string }) {
   const [isImageOk, setIsImageOk] = useState(true);
 
   return (
-    <div className="space-y-3">
+    <div className="w-full max-w-md space-y-3">
       {isImageOk && (
-        <img
-          src={url}
-          alt="Document"
-          className="w-full max-h-[22rem] rounded-xl border border-slate-200 bg-white object-cover"
-          loading="lazy"
-          onError={() => setIsImageOk(false)}
-        />
+        <div className="rounded-xl border border-slate-200 bg-white p-2">
+          <img
+            src={url}
+            alt="Document"
+            className="h-56 w-full rounded-lg bg-slate-50 object-contain"
+            loading="lazy"
+            onError={() => setIsImageOk(false)}
+          />
+        </div>
       )}
       <a
         href={url}
