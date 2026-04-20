@@ -3,7 +3,7 @@ import { Navigate, redirect } from 'react-router-dom';
 import { userAuthLoader } from '@/loader/user.auth.loader';
 import UserAuthPage from '@/pages/user/UserAuthPage';
 import UserDashboard from '@/pages/user/UserDashboard';
-import UserKycPage from '@/pages/user/UserKycPage';
+import UserKycStatusPage from '@/pages/user/UserKycStatusPage';
 import UserLandRegistrationPage from '@/pages/user/UserLandRegistrationPage';
 import UserLandSearchPage from '@/pages/user/UserLandSearchPage';
 
@@ -41,7 +41,7 @@ export const userRoutes = [
       },
       {
         path: 'kyc',
-        element: <UserKycPage />,
+        element: <UserKycStatusPage />,
       },
       {
         path: 'land-registration',

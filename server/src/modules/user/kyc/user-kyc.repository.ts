@@ -13,7 +13,9 @@ export const findUserKycByUserId = async (
 ): Promise<existingUser | null> => {
   const result = await pool.query(
     `SELECT user_id, status, rejection_reason, submitted_at FROM user_kyc
-    WHERE user_id = $1`,
+    WHERE user_id = $1
+    ORDER BY submitted_at DESC
+    LIMIT 1`,
     [userId],
   );
   return result.rows[0] || null;
