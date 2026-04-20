@@ -280,7 +280,6 @@ function RegistrarResponseCard({
         <Field label="District" value={capitalize(data.district)} />
         <Field label="State" value={capitalize(data.state)} />
         <Field label="Created at" value={formattedDate} />
-        <Field label="Created at (raw)" value={data.createdAt} mono />
       </dl>
     </div>
   );
