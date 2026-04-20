@@ -27,7 +27,6 @@ interface KycData {
   address: string;
   pincode: string;
   district: string;
-  state: string;
   pan_number: string;
 }
 
@@ -38,7 +37,7 @@ export const insertIntoUserKyc = async (
   documentKey: string,
 ) => {
   await pool.query(
-    `INSERT INTO user_kyc (user_id, pan_name, phone, address, pincode, district, state, pan_number, pan_document_key)
+    `INSERT INTO user_kyc (user_id, pan_name, phone, address, pincode, district, pan_number, pan_document_key)
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
     [
       userId,
@@ -47,7 +46,6 @@ export const insertIntoUserKyc = async (
       data.address,
       data.pincode,
       data.district,
-      data.state,
       data.pan_number,
       documentKey,
     ],

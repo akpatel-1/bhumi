@@ -43,7 +43,6 @@ create table if not exists user_kyc (
   address text not null,
   pincode text not null,
   district citext not null,
-  state citext not null,
   pan_number text not null,
   pan_document_key text not null,
   status kyc_status not null default 'pending',
@@ -68,7 +67,6 @@ create table if not exists user_profiles (
   pan_name text,
   phone text,
   district citext,
-  state citext,
   is_suspended boolean not null default false,
   suspension_reason text,
   created_at timestamptz default now()
@@ -79,9 +77,8 @@ create table if not exists registrar_profiles (
   id uuid primary key default gen_random_uuid (),
   user_id uuid not null references users (id) on delete CASCADE,
   district citext not null,
-  state citext not null,
   created_by uuid not null references users (id),
   created_at timestamptz not null default now(),
   unique (user_id),
-  unique (district, state)
 );
+

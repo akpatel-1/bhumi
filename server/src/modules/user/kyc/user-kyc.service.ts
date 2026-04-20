@@ -1,7 +1,6 @@
 import { pool } from '@/infra/db/db.js';
 import { ApiError } from '@/utils/api-error.js';
 import { deleteFromR2, uploadToR2 } from '@/utils/r2-services.js';
-import { withTransaction } from '@/utils/transaction.js';
 
 import { findUserKycByUserId, insertIntoUserKyc } from './user-kyc.repository.js';
 
@@ -11,7 +10,6 @@ interface KycData {
   address: string;
   pincode: string;
   district: string;
-  state: string;
   pan_number: string;
 }
 

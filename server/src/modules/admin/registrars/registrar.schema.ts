@@ -20,5 +20,4 @@ export const registrarSchema = z.object({
 
   district: z.string().trim().min(2, 'District is required'),
 
-  state: z.string().trim().min(2, 'State is required'),
 });

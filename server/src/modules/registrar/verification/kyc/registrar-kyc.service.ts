@@ -27,7 +27,6 @@ export const getKyc = async (userId: string, status: KycStatus) => {
         address: kyc.address,
         pincode: kyc.pincode,
         district: kyc.district,
-        state: kyc.state,
         pan_document_url: panDocumentUrl,
       };
 

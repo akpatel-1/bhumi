@@ -11,7 +11,6 @@ export const userKycSchema = z.object({
     .regex(/^[A-Za-z]{5}[0-9]{4}[A-Za-z]$/, 'Invalid PAN format')
     .transform((val) => val.toUpperCase()),
   address: z.string().min(5, 'Full address is required'),
-  state: z.string().min(1, 'State is required'),
   district: z.string().min(2, 'District is required'),
   pincode: z.string().regex(/^[0-9]{6}$/, 'Must be exactly 6 digits'),
 });
