@@ -73,10 +73,10 @@ export default function ApprovedKycStatus({
         {/* Primary Action */}
         <div className="space-y-4 pt-2">
           <Link
-            to="/user/registry"
+            to="/user/land"
             className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-6 py-4 text-sm font-bold text-white shadow-lg shadow-slate-900/20 transition-all hover:bg-slate-800 hover:-translate-y-0.5 active:translate-y-0"
           >
-            Go to Land Registry
+            Go to My Property
             <ArrowRight className="w-4 h-4" />
           </Link>
 
