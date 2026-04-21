@@ -3,6 +3,7 @@ import { adminRegistrarRoutes } from '@modules/admin/registrars/registrars.route
 import { registrarAuthRoutes } from '@modules/registrar/auth/registrar-auth.routes.js';
 import { userAuthRoutes } from '@modules/user/auth/user-auth.routes.js';
 import { userKycRoutes } from '@modules/user/kyc/user-kyc.routes.js';
+import { userLandRoutes } from '@modules/user/land/user-land.routes.js';
 import express from 'express';
 
 import { registrarKycRoutes } from './modules/registrar/verification/kyc/registrar-kyc.routes.js';
@@ -17,3 +18,4 @@ router.use('/registrar', registrarKycRoutes);
 
 router.use('/user', userAuthRoutes);
 router.use('/user', userKycRoutes);
+router.use('/user', userLandRoutes);
