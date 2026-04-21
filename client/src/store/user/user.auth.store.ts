@@ -1,5 +1,6 @@
 import { userApi } from '@/services/user/user.api';
 import { useUserKycStore } from '@/store/user/user.kyc.store';
+import { useUserLandDetailsStore } from '@/store/user/user.land.details.store';
 import type {
   UserEmailPayload,
   UserSessionUser,
@@ -37,6 +38,7 @@ export const userAuthStore = create<UserAuthStore>((set, get) => ({
     } finally {
       get().clearUser();
       useUserKycStore.getState().clear();
+      useUserLandDetailsStore.getState().clear();
     }
   },
 

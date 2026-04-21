@@ -11,6 +11,7 @@ import type {
   UserSubmitKycPayload,
   UserSubmitKycResponse,
 } from '@/types/user/user.kyc.types';
+import type { UserLandDetailsResponse } from '@/types/user/user.land.types';
 
 import { userClient } from './user.client';
 
@@ -60,6 +61,11 @@ export const userApi = {
       '/user/kyc',
       formData
     );
+    return res.data;
+  },
+
+  getLandDetails: async () => {
+    const res = await userClient.get<UserLandDetailsResponse>('/user/land');
     return res.data;
   },
 

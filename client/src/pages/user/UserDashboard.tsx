@@ -12,9 +12,9 @@ const tabs: NavTab[] = [
     path: '/user/kyc',
   },
   {
-    label: 'Property Registration',
+    label: 'My Property',
     icon: Landmark,
-    path: '/user/land-registration',
+    path: '/user/land',
   },
   {
     label: 'Search Property',
