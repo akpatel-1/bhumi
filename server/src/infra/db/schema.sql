@@ -79,7 +79,7 @@ create table if not exists registrar_profiles (
   district citext not null,
   created_by uuid not null references users (id),
   created_at timestamptz not null default now(),
-  unique (user_id),
+  unique (user_id)
 );
 
 CREATE TABLE land_records (

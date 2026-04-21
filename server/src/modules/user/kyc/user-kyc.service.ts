@@ -22,7 +22,7 @@ export const submitKyc = async (data: KycData, file: Express.Multer.File, userId
       code: 'KYC_ALREADY_APPLIED',
     });
   }
-  const documentKey = await uploadToR2(userId, file, 'user_kyc');
+  const documentKey = await uploadToR2(userId, file, 'users_kyc');
   try {
     await insertIntoUserKyc(pool, userId, data, documentKey);
   } catch {
