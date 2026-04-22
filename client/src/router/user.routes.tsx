@@ -5,6 +5,7 @@ import UserAuthPage from '@/pages/user/UserAuthPage';
 import UserDashboard from '@/pages/user/UserDashboard';
 import UserKycPage from '@/pages/user/UserKycPage';
 import UserLandDetailsPage from '@/pages/user/UserLandDetailsPage';
+import UserLandHistoryPage from '@/pages/user/UserLandHistoryPage';
 import UserLandRegistrationPage from '@/pages/user/UserLandRegistrationPage';
 import UserLandSearchPage from '@/pages/user/UserLandSearchPage';
 import UserProfilePage from '@/pages/user/UserProfilePage';
@@ -52,6 +53,10 @@ export const userRoutes = [
       {
         path: 'land',
         element: <UserLandDetailsPage />,
+      },
+      {
+        path: 'land/:landId/history',
+        element: <UserLandHistoryPage />,
       },
       {
         path: 'land-registration',

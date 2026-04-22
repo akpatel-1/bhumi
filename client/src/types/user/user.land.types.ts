@@ -38,3 +38,29 @@ export type UserLandSearchResponse = {
   message: string;
   data: UserLandSearchItem[];
 };
+
+export type UserLandHistoryPageParty = {
+  name: string;
+};
+
+export type UserLandHistoryPageItem = {
+  block_number: number;
+  block_hash: string;
+  transaction_type: string;
+  status: string;
+  district: string;
+  tehsil: string;
+  village: string;
+  area_sqm: string;
+  image_url: string | null;
+  acquired_at: string;
+  from: UserLandHistoryPageParty;
+  to: UserLandHistoryPageParty;
+  timestamp: string;
+};
+
+export type UserLandHistoryPageResponse = {
+  success: boolean;
+  message: string;
+  data: UserLandHistoryPageItem[];
+};

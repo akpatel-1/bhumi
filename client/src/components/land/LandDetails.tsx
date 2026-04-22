@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
-
-
+import { useNavigate } from 'react-router-dom';
 
 import { useUserLandDetailsStore } from '@/store/user/user.land.details.store';
 
-import { CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, History } from 'lucide-react';
 
 function formatDate(value: string) {
   const date = new Date(value);
@@ -18,6 +17,7 @@ function formatDate(value: string) {
 }
 
 export default function LandDetails() {
+  const navigate = useNavigate();
   const [preview, setPreview] = useState<{ src: string; title: string } | null>(
     null
   );
@@ -139,6 +139,19 @@ export default function LandDetails() {
                       <span className="text-slate-500">Source:</span>{' '}
                       {land.transaction_type}
                     </p>
+                  </div>
+
+                  <div className="pt-1">
+                    <button
+                      type="button"
+                      className="inline-flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700 transition hover:bg-emerald-100"
+                      onClick={() =>
+                        navigate(`/user/land/${land.land_id}/history`)
+                      }
+                    >
+                      <History className="h-4 w-4" />
+                      See History
+                    </button>
                   </div>
                 </div>
               </article>

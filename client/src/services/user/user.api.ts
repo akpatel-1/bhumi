@@ -13,6 +13,7 @@ import type {
 } from '@/types/user/user.kyc.types';
 import type {
   UserLandDetailsResponse,
+  UserLandHistoryPageResponse,
   UserLandSearchFilter,
   UserLandSearchResponse,
 } from '@/types/user/user.land.types';
@@ -71,6 +72,13 @@ export const userApi = {
 
   getLandDetails: async () => {
     const res = await userClient.get<UserLandDetailsResponse>('/user/land');
+    return res.data;
+  },
+
+  getLandHistory: async (landId: string) => {
+    const res = await userClient.get<UserLandHistoryPageResponse>(
+      `/user/land/${landId}/history`
+    );
     return res.data;
   },
 
