@@ -7,6 +7,7 @@ import UserKycStatusPage from '@/pages/user/UserKycStatusPage';
 import UserLandDetailsPage from '@/pages/user/UserLandDetailsPage';
 import UserLandRegistrationPage from '@/pages/user/UserLandRegistrationPage';
 import UserLandSearchPage from '@/pages/user/UserLandSearchPage';
+import UserProfilePage from '@/pages/user/UserProfilePage';
 
 const requireUserAuthLoader = async () => {
   const user = await userAuthLoader();
@@ -43,6 +44,10 @@ export const userRoutes = [
       {
         path: 'kyc',
         element: <UserKycStatusPage />,
+      },
+      {
+        path: 'profile',
+        element: <UserProfilePage />,
       },
       {
         path: 'land',

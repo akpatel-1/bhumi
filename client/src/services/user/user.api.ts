@@ -12,6 +12,7 @@ import type {
   UserSubmitKycResponse,
 } from '@/types/user/user.kyc.types';
 import type { UserLandDetailsResponse } from '@/types/user/user.land.types';
+import type { UserProfileResponse } from '@/types/user/user.profile.types';
 
 import { userClient } from './user.client';
 
@@ -66,6 +67,11 @@ export const userApi = {
 
   getLandDetails: async () => {
     const res = await userClient.get<UserLandDetailsResponse>('/user/land');
+    return res.data;
+  },
+
+  getProfile: async () => {
+    const res = await userClient.get<UserProfileResponse>('/user/profile');
     return res.data;
   },
 

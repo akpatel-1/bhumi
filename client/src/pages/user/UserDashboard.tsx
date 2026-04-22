@@ -3,9 +3,14 @@ import { Outlet } from 'react-router-dom';
 import Layout from '@/components/dashboard/Layout';
 import type { NavTab } from '@/components/dashboard/Sidebar';
 
-import { BadgeCheck, Landmark, Search } from 'lucide-react';
+import { BadgeCheck, CircleUserRound, Landmark, Search } from 'lucide-react';
 
 const tabs: NavTab[] = [
+  {
+    label: 'Profile',
+    icon: CircleUserRound,
+    path: '/user/profile',
+  },
   {
     label: 'User KYC',
     icon: BadgeCheck,
