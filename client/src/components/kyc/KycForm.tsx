@@ -18,14 +18,6 @@ import {
   User,
 } from 'lucide-react';
 
-const STATES = [
-  'Chhattisgarh',
-  'Madhya Pradesh',
-  'Maharashtra',
-  'Uttar Pradesh',
-  'Rajasthan',
-];
-
 const EMPTY_FORM: Omit<UserSubmitKycPayload, 'pan_document'> & {
   pan_document: File | null;
 } = {
@@ -34,7 +26,7 @@ const EMPTY_FORM: Omit<UserSubmitKycPayload, 'pan_document'> & {
   address: '',
   pincode: '',
   district: '',
-  state: '',
+  state: 'chhattisgarh',
   pan_number: '',
   pan_document: null,
 };
@@ -208,22 +200,13 @@ export default function KycForm() {
               <label className="text-[0.78rem] font-bold text-slate-700 uppercase tracking-wider">
                 State
               </label>
-              <select
-                name="state"
-                value={formData.state}
-                onChange={onChange}
-                required
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white outline-none focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 transition-all text-sm"
-              >
-                <option value="" disabled>
-                  Select State
-                </option>
-                {STATES.map((s) => (
-                  <option key={s} value={s.toLowerCase()}>
-                    {s}
-                  </option>
-                ))}
-              </select>
+              <input
+                type="text"
+                value="Chhattisgarh"
+                readOnly
+                aria-readonly="true"
+                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-600 text-sm"
+              />
             </div>
 
             <div className="space-y-1.5">
