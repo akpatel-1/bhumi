@@ -78,6 +78,10 @@ export const villageLandDetails = async (
 ): Promise<VillageLandResponse[]> => {
   const records = await findVillageLands(pool, district, tehsil, village);
 
+  if (!records) {
+    throw new ApiError(ERROR_CONFIG.LAND_RECORD_NOT_FOUND);
+  }
+
   return await Promise.all(
     records.map(async (record) => {
       const image_url = record.image_r2_key ? await getPresignedUrl(record.image_r2_key) : null;

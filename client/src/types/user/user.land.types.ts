@@ -16,3 +16,25 @@ export type UserLandDetailsResponse = {
   message: string;
   data: UserLandDetailsItem[];
 };
+
+export type UserLandSearchFilter = {
+  district: string;
+  tehsil: string;
+  village: string;
+};
+
+export type UserLandSearchItem = {
+  plot_no: string;
+  district: string;
+  tehsil: string;
+  village: string;
+  area_sqm: string;
+  land_type: string;
+  image_url: string | null;
+};
+
+export type UserLandSearchResponse = {
+  success: boolean;
+  message: string;
+  data: UserLandSearchItem[];
+};

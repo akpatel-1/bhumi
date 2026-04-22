@@ -11,7 +11,11 @@ import type {
   UserSubmitKycPayload,
   UserSubmitKycResponse,
 } from '@/types/user/user.kyc.types';
-import type { UserLandDetailsResponse } from '@/types/user/user.land.types';
+import type {
+  UserLandDetailsResponse,
+  UserLandSearchFilter,
+  UserLandSearchResponse,
+} from '@/types/user/user.land.types';
 import type { UserProfileResponse } from '@/types/user/user.profile.types';
 
 import { userClient } from './user.client';
@@ -67,6 +71,16 @@ export const userApi = {
 
   getLandDetails: async () => {
     const res = await userClient.get<UserLandDetailsResponse>('/user/land');
+    return res.data;
+  },
+
+  searchLand: async (filters: UserLandSearchFilter) => {
+    const res = await userClient.get<UserLandSearchResponse>(
+      '/user/land/search',
+      {
+        params: filters,
+      }
+    );
     return res.data;
   },
 

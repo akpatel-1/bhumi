@@ -54,4 +54,9 @@ export const ERROR_CONFIG = {
     message: 'You do not own this land',
     code: 'LAND_OWNERSHIP_DENIED',
   },
+  LAND_RECORD_NOT_FOUND: {
+    statusCode: 404,
+    message: 'Land record not found',
+    code: 'LAND_RECORD_NOT_FOUND',
+  },
 };
