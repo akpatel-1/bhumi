@@ -31,5 +31,9 @@ export const submitKyc = async (data: KycData, file: Express.Multer.File, userId
 };
 
 export const kycStatus = async (userId: string) => {
-  return await findUserKycByUserId(pool, userId);
+  const data = await findUserKycByUserId(pool, userId);
+  if (!data) {
+    return { status: 'not_applied' };
+  }
+  return data;
 };

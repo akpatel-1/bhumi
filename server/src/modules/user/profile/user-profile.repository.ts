@@ -28,9 +28,9 @@ export const findUserProfileByUserId = async (
 				up.is_suspended,
 				up.suspension_reason,
 				up.created_at
-			FROM users u
-			LEFT JOIN user_profiles up ON up.user_id = u.id
-			WHERE u.id = $1
+			FROM user_profiles up
+			INNER JOIN users u ON u.id = up.user_id
+			WHERE up.user_id = $1
 				AND u.role = 'user'
 			LIMIT 1
 		`,

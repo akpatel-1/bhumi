@@ -8,6 +8,7 @@ type UserProfileState = {
   hasFetched: boolean;
   isLoading: boolean;
   error: string | null;
+  errorCode: string | null;
   profile: UserProfileInfo | null;
 };
 
@@ -24,6 +25,7 @@ export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
   hasFetched: false,
   isLoading: false,
   error: null,
+  errorCode: null,
   profile: null,
 
   clear: () =>
@@ -31,6 +33,7 @@ export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
       hasFetched: false,
       isLoading: false,
       error: null,
+      errorCode: null,
       profile: null,
     }),
 
@@ -41,7 +44,7 @@ export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
       return get().profile;
     }
 
-    set({ isLoading: true, error: null });
+    set({ isLoading: true, error: null, errorCode: null });
 
     try {
       const response = await userApi.getProfile();
@@ -51,11 +54,18 @@ export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
         hasFetched: true,
         isLoading: false,
         error: null,
+        errorCode: null,
         profile: data,
       });
 
       return data;
     } catch (error) {
+      const code =
+        axios.isAxiosError(error) &&
+        typeof error.response?.data?.code === 'string'
+          ? error.response.data.code
+          : null;
+
       const message = axios.isAxiosError(error)
         ? (error.response?.data?.message ?? 'Unable to fetch profile info.')
         : error instanceof Error
@@ -66,6 +76,7 @@ export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
         hasFetched: true,
         isLoading: false,
         error: message,
+        errorCode: code,
         profile: null,
       });
 
