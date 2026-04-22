@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 
-import type { LandDetails } from './land.model.js';
+import type { LandDetails, LandHistoryDetails } from './land.model.js';
 
 export const findUserLandByUserId = async (pool: Pool, userId: string): Promise<LandDetails[]> => {
   const result = await pool.query<LandDetails>(
@@ -38,5 +38,48 @@ export const findUserLandByUserId = async (pool: Pool, userId: string): Promise<
     [userId],
   );
 
+  return result.rows;
+};
+
+export const findCurrentLandOwner = async (
+  pool: Pool,
+  landId: string,
+): Promise<{ to_user_id: string } | null> => {
+  const result = await pool.query(
+    `SELECT to_user_id FROM land_transactions
+     WHERE land_id = $1 AND status = 'approved'
+     ORDER BY created_at DESC
+     LIMIT 1`,
+    [landId],
+  );
+  return result.rows[0] ?? null;
+};
+
+export const findLandHistoryByLandId = async (
+  pool: Pool,
+  landId: string,
+): Promise<LandHistoryDetails[]> => {
+  const result = await pool.query<LandHistoryDetails>(
+    `SELECT
+       bb.block_hash,
+       bb.previous_hash,
+       bb.payload,
+       bb.created_at,
+       lt.transaction_type,
+       lt.status,
+       from_user.id as from_user_id,
+       up_from.pan_name as from_name,
+       to_user.id as to_user_id,
+       up_to.pan_name as to_name
+     FROM blockchain_blocks bb
+     JOIN land_transactions lt ON lt.id = bb.transaction_id
+     JOIN users from_user ON from_user.id = lt.from_user_id
+     JOIN users to_user ON to_user.id = lt.to_user_id
+     LEFT JOIN user_profiles up_from ON up_from.user_id = from_user.id
+     LEFT JOIN user_profiles up_to ON up_to.user_id = to_user.id
+     WHERE bb.land_id = $1
+     ORDER BY bb.created_at ASC`,
+    [landId],
+  );
   return result.rows;
 };

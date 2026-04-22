@@ -49,4 +49,9 @@ export const ERROR_CONFIG = {
     message: 'Pending KYC request not found for this user.',
     code: 'KYC_NOT_FOUND',
   },
+  LAND_OWNERSHIP_DENIED: {
+    statusCode: 403,
+    message: 'You do not own this land',
+    code: 'LAND_OWNERSHIP_DENIED',
+  },
 };
