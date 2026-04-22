@@ -1,5 +1,11 @@
 import { Clock, Info, ShieldCheck } from 'lucide-react';
 
+
+
+
+
+
+
 type PendingKycStatusProps = {
   submittedAt?: string | null;
 };
@@ -39,7 +45,7 @@ export default function PendingKycStatus({
           </h1>
           <p className="text-slate-500 max-w-md mx-auto leading-relaxed">
             Your documents are currently being reviewed by our compliance team.
-            This process typically takes 24–48 hours.
+            This process typically takes 24-48 hours.
           </p>
         </div>
 

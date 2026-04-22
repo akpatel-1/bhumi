@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+
+
 import { userApi } from '@/services/user/user.api';
 import { useUserKycStore } from '@/store/user/user.kyc.store';
 import type { UserSubmitKycPayload } from '@/types/user/user.kyc.types';
@@ -87,17 +89,31 @@ export default function KycForm() {
 
   return (
     <div className=" mx-auto space-y-8 py-4">
-      <div className="space-y-2">
-        <h1
-          className="text-3xl font-bold text-slate-900 tracking-tight"
-          style={{ fontFamily: "'Playfair Display', serif" }}
-        >
-          Identity Verification
-        </h1>
-        <p className="text-slate-500 text-sm">
-          Please provide your official details as per your PAN card to unlock
-          full registry features.
-        </p>
+      <div className="relative overflow-hidden rounded-2xl border border-emerald-100 bg-linear-to-r from-emerald-50 via-white to-violet-50 p-5 md:p-6 shadow-sm">
+        <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-emerald-100/60 blur-2xl" />
+        <div className="relative space-y-3">
+          <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/80 px-4 py-1.5 text-sm font-semibold text-emerald-700">
+            <CheckCircle2 className="h-4 w-4" />
+            Identity Verification
+          </span>
+
+          <p className="max-w-2xl text-xs leading-relaxed text-slate-600 md:text-sm">
+            Please provide your official details as per your PAN card to unlock
+            full registry features.
+          </p>
+
+          <div className="flex flex-wrap gap-2 pt-1">
+            <span className="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-medium text-slate-600 md:text-xs">
+              Accurate details only
+            </span>
+            <span className="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-medium text-slate-600 md:text-xs">
+              Secure document upload
+            </span>
+            <span className="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-medium text-slate-600 md:text-xs">
+              Quick review process
+            </span>
+          </div>
+        </div>
       </div>
 
       <form onSubmit={onSubmit} className="space-y-8">
@@ -203,8 +219,9 @@ export default function KycForm() {
               <input
                 type="text"
                 value="Chhattisgarh"
-                readOnly
+                readOnly 
                 aria-readonly="true"
+                placeholder='Select State'
                 className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-600 text-sm"
               />
             </div>
@@ -262,6 +279,7 @@ export default function KycForm() {
                 id="pan_document"
                 type="file"
                 onChange={onFileChange}
+                placeholder='Add Pancard Image'
                 required
                 accept="application/pdf,image/*"
                 className="absolute inset-0 opacity-0 cursor-pointer"
