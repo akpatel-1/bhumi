@@ -27,13 +27,18 @@ export const submitKyc = async (data: KycData, file: Express.Multer.File, userId
     await insertIntoUserKyc(pool, userId, data, documentKey);
   } catch {
     await deleteFromR2(documentKey);
+    throw new ApiError({
+      statusCode: 500,
+      message: 'Unable to submit KYC at the moment.',
+      code: 'KYC_SUBMIT_FAILED',
+    });
   }
 };
 
 export const kycStatus = async (userId: string) => {
   const data = await findUserKycByUserId(pool, userId);
   if (!data) {
-    return { status: 'not_applied' };
+    return { state: 'not_applied' };
   }
   return data;
 };

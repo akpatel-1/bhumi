@@ -3,7 +3,7 @@ import { Pool } from 'pg';
 interface existingUser {
   user_id: string;
   status: string;
-  rejected_reason: string;
+  rejection_reason: string;
   submitted_at: Date;
 }
 
@@ -38,7 +38,7 @@ export const insertIntoUserKyc = async (
 ) => {
   await pool.query(
     `INSERT INTO user_kyc (user_id, pan_name, phone, address, pincode, district, pan_number, pan_document_key)
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
     [
       userId,
       data.pan_name,
