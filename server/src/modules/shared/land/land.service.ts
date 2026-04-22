@@ -22,7 +22,7 @@ export const landDetails = async (userId: string): Promise<LandDetailsResponse[]
     records.map(async (record) => {
       const image_url = record.image_r2_key ? await getPresignedUrl(record.image_r2_key) : null;
 
-      const { image_r2_key: _imageR2Key, land_id: _landId, ...landDetails } = record;
+      const { image_r2_key: _imageR2Key, ...landDetails } = record;
       return {
         ...landDetails,
         image_url,
