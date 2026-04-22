@@ -3,11 +3,17 @@ import { ERROR_CONFIG } from '@/modules/error-config.js';
 import { ApiError } from '@/utils/api-error.js';
 import { getPresignedUrl } from '@/utils/r2-services.js';
 
-import type { LandDetailsResponse, LandHistoryDetails, LandHistoryResponse } from './land.model.js';
+import type {
+  LandDetailsResponse,
+  LandHistoryDetails,
+  LandHistoryResponse,
+  VillageLandResponse,
+} from './land.model.js';
 import {
   findCurrentLandOwner,
   findLandHistoryByLandId,
   findUserLandByUserId,
+  findVillageLands,
 } from './land.repository.js';
 
 export const landDetails = async (userId: string): Promise<LandDetailsResponse[]> => {
@@ -17,7 +23,7 @@ export const landDetails = async (userId: string): Promise<LandDetailsResponse[]
     records.map(async (record) => {
       const image_url = record.image_r2_key ? await getPresignedUrl(record.image_r2_key) : null;
 
-      const { image_r2_key: _imageR2Key, ...landDetails } = record;
+      const { image_r2_key: _imageR2Key, land_id: _landId, ...landDetails } = record;
       return {
         ...landDetails,
         image_url,
@@ -51,4 +57,24 @@ export const landHistoryDetails = async (
     to: { name: block.to_name },
     timestamp: block.created_at,
   }));
+};
+
+export const villageLandDetails = async (
+  district: string,
+  tehsil: string,
+  village: string,
+): Promise<VillageLandResponse[]> => {
+  const records = await findVillageLands(pool, district, tehsil, village);
+
+  return await Promise.all(
+    records.map(async (record) => {
+      const image_url = record.image_r2_key ? await getPresignedUrl(record.image_r2_key) : null;
+      const { image_r2_key: _imageR2Key, land_id: _landId, ...land } = record;
+
+      return {
+        ...land,
+        image_url,
+      };
+    }),
+  );
 };

@@ -11,7 +11,7 @@ export interface LandDetails {
   transaction_type: string;
 }
 
-export type LandDetailsResponse = Omit<LandDetails, 'image_r2_key'> & {
+export type LandDetailsResponse = Omit<LandDetails, 'image_r2_key' | 'land_id'> & {
   image_url: string | null;
 };
 
@@ -41,3 +41,18 @@ export interface LandHistoryResponse {
   };
   timestamp: Date;
 }
+
+export interface VillageLandRecord {
+  land_id: string;
+  plot_no: string;
+  district: string;
+  tehsil: string;
+  village: string;
+  area_sqm: string;
+  land_type: string;
+  image_r2_key: string | null;
+}
+
+export type VillageLandResponse = Omit<VillageLandRecord, 'image_r2_key' | 'land_id'> & {
+  image_url: string | null;
+};

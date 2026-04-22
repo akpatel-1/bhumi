@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 
-import type { LandDetails, LandHistoryDetails } from './land.model.js';
+import type { LandDetails, LandHistoryDetails, VillageLandRecord } from './land.model.js';
 
 export const findUserLandByUserId = async (pool: Pool, userId: string): Promise<LandDetails[]> => {
   const result = await pool.query<LandDetails>(
@@ -81,5 +81,32 @@ export const findLandHistoryByLandId = async (
      ORDER BY bb.created_at ASC`,
     [landId],
   );
+  return result.rows;
+};
+
+export const findVillageLands = async (
+  pool: Pool,
+  district: string,
+  tehsil: string,
+  village: string,
+): Promise<VillageLandRecord[]> => {
+  const result = await pool.query<VillageLandRecord>(
+    `SELECT
+       lr.id AS land_id,
+       lr.plot_no,
+       lr.district,
+       lr.tehsil,
+       lr.village,
+       lr.area_sqm::text,
+       lr.land_type,
+       lr.image_r2_key
+     FROM land_records lr
+     WHERE lower(lr.district) = lower($1)
+       AND lower(lr.tehsil) = lower($2)
+       AND lower(lr.village) = lower($3)
+     ORDER BY lr.created_at DESC`,
+    [district, tehsil, village],
+  );
+
   return result.rows;
 };
