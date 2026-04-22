@@ -1,10 +1,10 @@
 import { pool } from '@/infra/db/db.js';
 import { getPresignedUrl } from '@/utils/r2-services.js';
 
-import type { UserLandDetailsResponse } from './user-land.model.js';
-import { findUserLandByUserId } from './user-land.repository.js';
+import type { LandDetailsResponse } from './land.model.js';
+import { findUserLandByUserId } from './land.repository.js';
 
-export const getLand = async (userId: string): Promise<UserLandDetailsResponse[]> => {
+export const landDetails = async (userId: string): Promise<LandDetailsResponse[]> => {
   const records = await findUserLandByUserId(pool, userId);
 
   const data = await Promise.all(

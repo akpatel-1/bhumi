@@ -1,9 +1,9 @@
 import { authHandler } from '@/utils/auth-handler.js';
 import { sendResponse } from '@/utils/response-helper.js';
 
-import { getLand } from './user-land.service.js';
+import { landDetails } from '../../shared/land/land.service.js';
 
-export const getUsersLand = authHandler(async (req, res) => {
-  const data = await getLand(req.user.id);
+export const getLandDetails = authHandler(async (req, res) => {
+  const data = await landDetails(req.user.id);
   sendResponse(res, { data });
 });

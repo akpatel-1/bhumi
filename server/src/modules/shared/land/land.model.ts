@@ -1,4 +1,4 @@
-export interface UserLandDetails {
+export interface LandDetails {
   land_id: string;
   plot_no: string;
   district: string;
@@ -11,6 +11,6 @@ export interface UserLandDetails {
   transaction_type: string;
 }
 
-export type UserLandDetailsResponse = Omit<UserLandDetails, 'image_r2_key'> & {
+export type LandDetailsResponse = Omit<LandDetails, 'image_r2_key'> & {
   image_url: string | null;
 };

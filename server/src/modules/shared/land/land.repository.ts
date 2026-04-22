@@ -1,12 +1,9 @@
 import type { Pool } from 'pg';
 
-import type { UserLandDetails } from './user-land.model.js';
+import type { LandDetails } from './land.model.js';
 
-export const findUserLandByUserId = async (
-  pool: Pool,
-  userId: string,
-): Promise<UserLandDetails[]> => {
-  const result = await pool.query<UserLandDetails>(
+export const findUserLandByUserId = async (pool: Pool, userId: string): Promise<LandDetails[]> => {
+  const result = await pool.query<LandDetails>(
     `
       WITH latest_approved_transactions AS (
         SELECT
