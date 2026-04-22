@@ -5,7 +5,6 @@ import { getPresignedUrl } from '@/utils/r2-services.js';
 
 import type {
   LandDetailsResponse,
-  LandHistoryDetails,
   LandHistoryResponse,
   VillageLandResponse,
 } from './land.model.js';
@@ -47,12 +46,25 @@ export const landHistoryDetails = async (
   }
 
   const landHistory = await findLandHistoryByLandId(pool, landId);
+  if (!landHistory.length) {
+    return [];
+  }
+
+  const image_url = landHistory[0].image_r2_key
+    ? await getPresignedUrl(landHistory[0].image_r2_key)
+    : null;
 
   return landHistory.map((block, index) => ({
     block_number: index + 1,
     block_hash: block.block_hash,
     transaction_type: block.transaction_type,
     status: block.status,
+    district: block.district,
+    tehsil: block.tehsil,
+    village: block.village,
+    area_sqm: block.area_sqm,
+    image_url,
+    acquired_at: block.acquired_at,
     from: { name: block.from_name ?? 'Government of Chhattisgarh' },
     to: { name: block.to_name },
     timestamp: block.created_at,

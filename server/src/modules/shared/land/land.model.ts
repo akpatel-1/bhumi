@@ -26,6 +26,12 @@ export interface LandHistoryDetails {
   from_name: string | null;
   to_user_id: string;
   to_name: string | null;
+  district: string;
+  tehsil: string;
+  village: string;
+  area_sqm: string;
+  image_r2_key: string | null;
+  acquired_at: Date | null;
 }
 
 export interface LandHistoryResponse {
@@ -33,6 +39,12 @@ export interface LandHistoryResponse {
   block_hash: string;
   transaction_type: string;
   status: string;
+  district: string;
+  tehsil: string;
+  village: string;
+  area_sqm: string;
+  image_url: string | null;
+  acquired_at: Date | null;
   from: {
     name: string;
   };

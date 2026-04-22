@@ -70,13 +70,28 @@ export const findLandHistoryByLandId = async (
        from_user.id as from_user_id,
        up_from.pan_name as from_name,
        to_user.id as to_user_id,
-       up_to.pan_name as to_name
+       up_to.pan_name as to_name,
+       lr.district,
+       lr.tehsil,
+       lr.village,
+       lr.area_sqm::text,
+       lr.image_r2_key,
+       latest_tx.created_at AS acquired_at
      FROM blockchain_blocks bb
      JOIN land_transactions lt ON lt.id = bb.transaction_id
      JOIN users from_user ON from_user.id = lt.from_user_id
      JOIN users to_user ON to_user.id = lt.to_user_id
      LEFT JOIN user_profiles up_from ON up_from.user_id = from_user.id
      LEFT JOIN user_profiles up_to ON up_to.user_id = to_user.id
+     JOIN land_records lr ON lr.id = bb.land_id
+     LEFT JOIN LATERAL (
+       SELECT ltx.created_at
+       FROM land_transactions ltx
+       WHERE ltx.land_id = bb.land_id
+         AND ltx.status = 'approved'
+       ORDER BY ltx.created_at DESC, ltx.id DESC
+       LIMIT 1
+     ) latest_tx ON true
      WHERE bb.land_id = $1
      ORDER BY bb.created_at ASC`,
     [landId],
