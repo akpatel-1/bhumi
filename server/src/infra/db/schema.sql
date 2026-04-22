@@ -110,3 +110,13 @@ CREATE TABLE land_transactions (
   blockchain_tx_hash TEXT,
   created_at         TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+CREATE TABLE blockchain_blocks (
+  id               UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  transaction_id   UUID NOT NULL REFERENCES land_transactions(id),
+  land_id          UUID NOT NULL REFERENCES land_records(id),
+  block_hash       TEXT NOT NULL,   
+  previous_hash    TEXT NOT NULL,   
+  payload          JSONB NOT NULL,  
+  created_at       TIMESTAMPTZ NOT NULL DEFAULT now()
+);
